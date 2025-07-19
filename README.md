@@ -6,14 +6,14 @@
 | Nombre Completo         | Carné        |
 |-------------------------|--------------|
 | Gabriela Méndez         | MB230496     |
-| Nombre Integrante 2     | ######       |
-| Nombre Integrante 3     | ######       |
-| Nombre Integrante 4     | ######       |
-| Nombre Integrante 5     | ######       |
+| Milton Flores           | FG212499     |
+| Jose Quintanilla        | QL210503     |
+| Valeria Gonzalez        | GL221827     |
+| Alejandro Martinez      | MR222768     |
 
 ## 📁 Repositorio del Proyecto
 
-🔗 [https://github.com/usuario/proyecto-chatbot-medico](https://github.com/usuario/proyecto-chatbot-medico)
+🔗 https://github.com/GabyArgu/Investigaci-n-Aplicada-1?tab=readme-ov-file
 
 ## 🛠️ Tecnologías utilizadas
 
@@ -95,12 +95,9 @@ Este uso permitió una mayor velocidad de desarrollo, coherencia en la escritura
 
 ## 🔎 Referencias y Bibliografía
 
-- [GitHub Copilot – OpenAI & GitHub](https://docs.github.com/en/copilot)
-- [React Documentation – reactjs.org](https://react.dev/)
-- Universidad Don Bosco – [Repositorio Institucional UDB](https://rd.udb.edu.sv/home)
+[1] GitHub, Inc. & OpenAI, "Introducing GitHub Copilot," GitHub, 2021. [Online]. Disponible en: https://github.com/features/copilot
+[2] OpenAI, "Guía de uso de ChatGPT," OpenAI, 2023. [Online]. Disponible en: https://platform.openai.com/docs/guides/gpt
+[3] S. J. Russell y P. Norvig, "Artificial Intelligence: A Modern Approach," 4th ed., Pearson, 2020.
+[4] J. McTear, "Conversational AI: Dialogue Systems, Conversational Agents, and Chatbots," Morgan & Claypool, 2020.
+[5] Microsoft, "Documentación de Copilot en GitHub," Microsoft Learn, 2024. [Online]. Disponible en: https://learn.microsoft.com/es-es/copilot/github/
 
-### Ejemplo de cita IEEE:
-
-```
-[1] GitHub, Inc. & OpenAI, "Introducing GitHub Copilot," GitHub, 2021. [Online]. Available: https://github.com/features/copilot
-```
