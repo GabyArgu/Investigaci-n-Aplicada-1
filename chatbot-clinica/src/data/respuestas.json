@@ -1,0 +1,806 @@
+{
+    "bienvenida": {
+        "respuestas": [
+            "¡Hola! Soy Medibot 🤖, tu asistente de salud en línea. ¿En qué puedo ayudarte hoy? Puedes escribir 'menú' para ver mis opciones.",
+            "¡Bienvenido/a! Soy el chatbot de la clínica. Dime, ¿qué necesitas saber o qué te preocupa? Puedes escribir 'menú' para ver las opciones.",
+            "Saludos, soy Medibot. Estoy aquí para asistirte con tus dudas de salud. ¿Cómo puedo ayudarte hoy?",
+            "¡Hola! Estoy listo para ayudarte con información de salud. ¿Qué necesitas?"
+        ]
+    },
+    "menu": {
+        "respuestas": [
+            "¡Claro! Aquí tienes las opciones en las que puedo ayudarte:\n\n1. **Síntomas generales y orientación médica** (ej. 'me duele la cabeza', 'fiebre')\n2. **Especialidades médicas** (ej. 'dermatólogo', 'cardiólogo')\n3. **Servicios y atención en la clínica** (ej. 'horarios', 'cómo agendar una cita')\n4. **Prevención, bienestar y salud mental** (ej. 'nutrición', 'manejo del estrés')\n5. **Información administrativa** (ej. 'seguros', 'documentos necesarios')",
+            "Estas son las áreas en las que puedo asistirte:\n\n* **Síntomas**\n* **Especialidades**\n* **Servicios de la clínica**\n* **Prevención y bienestar**\n* **Información administrativa**\n\n¿Cuál te interesa?",
+            "Para ayudarte mejor, elige una de estas categorías o hazme una pregunta directa:\n1. Síntomas\n2. Especialidades\n3. Servicios de la Clínica\n4. Prevención\n5. Info Administrativa",
+            "Mis funciones principales son:\n- Orientación sobre síntomas\n- Información de especialidades\n- Detalles sobre la clínica (horarios, citas)\n- Consejos de bienestar\n- Dudas administrativas\n¿Qué quieres explorar?"
+        ]
+    },
+    "sintomas_orientacion": {
+        "me_siento_mal": {
+            "preguntas": [
+                "me siento mal",
+                "no me siento bien",
+                "estoy enfermo",
+                "estoy enferma",
+                "que tengo",
+                "que me pasa",
+                "no estoy bien"
+            ],
+            "respuestas": [
+                "Lamento escuchar eso. Para poder ayudarte mejor, por favor, dime qué síntomas específicos tienes o qué te preocupa. Por ejemplo: 'me duele la cabeza', 'tengo fiebre' o 'problemas para respirar'."
+            ],
+            "next_context": "sintomas"
+        },
+        "fiebre_alta": {
+            "preguntas": [
+                "fiebre",
+                "tengo fiebre",
+                "fiebre alta",
+                "temperatura alta",
+                "me siento caliente",
+                "calentura",
+                "andofiebre",
+                "fiebron"
+            ],
+            "respuestas": [
+                "Una **fiebre alta y prolongada** es una señal para consultar a un **médico general** o **internista**. Ellos pueden determinar la causa."
+            ],
+            "next_context": "sintomas",
+            "specific_prompt": "¿Tienes algún **otro síntoma** que te preocupe, o quieres que te **recomiende un especialista** con lo que ya me has dicho?"
+        },
+        "dolor_cabeza": {
+            "preguntas": [
+                "dolor de cabeza",
+                "me duele la cabeza",
+                "migraña",
+                "cefalea",
+                "cabeza me duele",
+                "tengo migraña",
+                "dolor fuerte de cabeza"
+            ],
+            "respuestas": [
+                "Si el **dolor de cabeza** es constante, muy intenso o se acompaña de otros síntomas, te recomiendo consultar con un **médico general**. Él o ella podrá determinar si es necesario derivarte a un **neurólogo**."
+            ],
+            "next_context": "sintomas",
+            "specific_prompt": "¿Tienes algún **otro síntoma** que te preocupe, o quieres que te **recomiende un especialista** con lo que ya me has dicho?"
+        },
+        "tos_persistente": {
+            "preguntas": [
+                "tos",
+                "tengo tos",
+                "tos seca",
+                "tos con flema",
+                "tos que no se quita",
+                "toser",
+                "muchatos",
+                "tosconstante"
+            ],
+            "respuestas": [
+                "La **tos persistente** puede tener muchas causas. Te recomiendo que te vea un **médico general** para que evalúe la situación. Si es necesario, te derivará a un **neumólogo** o **alergólogo**."
+            ],
+            "next_context": "sintomas",
+            "specific_prompt": "¿Tienes algún **otro síntoma** que te preocupe, o quieres que te **recomiende un especialista** con lo que ya me has dicho?"
+        },
+        "dolor_garganta": {
+            "preguntas": [
+                "dolor de garganta",
+                "me duele la garganta",
+                "garganta irritada",
+                "odinofagia",
+                "garganta rasposa",
+                "molestia en la garganta"
+            ],
+            "respuestas": [
+                "Un **dolor de garganta** persistente o severo debe ser evaluado por un **médico general** o un **otorrinolaringólogo**."
+            ],
+            "next_context": "sintomas",
+            "specific_prompt": "¿Tienes algún **otro síntoma** que te preocupe, o quieres que te **recomiende un especialista** con lo que ya me has dicho?"
+        },
+        "molestias_respirar": {
+            "preguntas": [
+                "dificultad para respirar",
+                "falta de aire",
+                "me cuesta respirar",
+                "ahogo",
+                "disnea",
+                "respiracion agitada",
+                "me ahogo"
+            ],
+            "respuestas": [
+                "La **dificultad para respirar** puede ser grave. Te sugiero buscar atención de un **médico general** o un **neumólogo** de inmediato. Si es una emergencia, llama al 911."
+            ],
+            "next_context": "sintomas",
+            "specific_prompt": "¿Tienes algún **otro síntoma** que te preocupe, o quieres que te **recomiende un especialista** con lo que ya me has dicho?"
+        },
+        "dolor_cuerpo": {
+            "preguntas": [
+                "dolor de cuerpo",
+                "dolor muscular",
+                "me duelen los musculos",
+                "cuerpo cortado",
+                "mialgia",
+                "dolores musculares",
+                "entumecimiento"
+            ],
+            "respuestas": [
+                "El **dolor de cuerpo** generalizado puede ser síntoma de varias condiciones. Un **médico general** puede ayudarte a determinar la causa. Si es persistente o muy intenso, un **reumatólogo** u **ortopeda** podrían ser necesarios."
+            ],
+            "next_context": "sintomas",
+            "specific_prompt": "¿Tienes algún **otro síntoma** que te preocupe, o quieres que te **recomiende un especialista** con lo que ya me has dicho?"
+        },
+        "dolor_abdominal": {
+            "preguntas": [
+                "dolor de estomago",
+                "dolor abdominal",
+                "me duele el abdomen",
+                "dolor de panza",
+                "retortijones",
+                "ardor en el estomago",
+                "molestias abdominales"
+            ],
+            "respuestas": [
+                "El **dolor abdominal** puede ser complejo. Un **médico general** es el primer paso, pero si es severo o recurrente, un **gastroenterólogo** sería el especialista adecuado."
+            ],
+            "next_context": "sintomas",
+            "specific_prompt": "¿Tienes algún **otro síntoma** que te preocupe, o quieres que te **recomiende un especialista** con lo que ya me has dicho?"
+        },
+        "dolor_espalda": {
+            "preguntas": [
+                "dolor de espalda",
+                "me duele la espalda",
+                "dolor lumbar",
+                "dolor cervical",
+                "dolor dorsal",
+                "problemas de espalda",
+                "ciatica"
+            ],
+            "respuestas": [
+                "Para el **dolor de espalda**, un **médico general** puede darte una evaluación inicial. Si el dolor es crónico o muy fuerte, un **ortopeda** o **fisioterapeuta** podrían ser necesarios."
+            ],
+            "next_context": "sintomas",
+            "specific_prompt": "¿Tienes algún **otro síntoma** que te preocupe, o quieres que te **recomiende un especialista** con lo que ya me has dicho?"
+        },
+        "nauseas_vomitos": {
+            "preguntas": [
+                "nauseas",
+                "vomito",
+                "ganas de vomitar",
+                "mareos",
+                "vomitos"
+            ],
+            "respuestas": [
+                "Las **náuseas y vómitos** pueden ser por diversas causas, desde una indigestión hasta algo más serio. Un **médico general** puede evaluarte. Si son persistentes o severos, busca atención médica."
+            ],
+            "next_context": "sintomas",
+            "specific_prompt": "¿Tienes algún **otro síntoma** que te preocupe, o quieres que te **recomiende un especialista** con lo que ya me has dicho?"
+        },
+        "erupciones_piel": {
+            "preguntas": [
+                "erupcion en la piel",
+                "ronchas",
+                "picazon",
+                "piel irritada",
+                "sarpullido",
+                "manchas en la piel"
+            ],
+            "respuestas": [
+                "Las **erupciones cutáneas** pueden ser por alergias, infecciones o irritaciones. Un **dermatólogo** es el especialista ideal, pero un **médico general** puede dar una primera evaluación."
+            ],
+            "next_context": "sintomas",
+            "specific_prompt": "¿Tienes algún **otro síntoma** que te preocupe, o quieres que te **recomiende un especialista** con lo que ya me has dicho?"
+        }
+    },
+    "especialidades_medicas": {
+        "medico_general": {
+            "preguntas": [
+                "medico general",
+                "doctor de cabecera",
+                "general",
+                "medicina general"
+            ],
+            "respuestas": [
+                "Un médico general es tu primer contacto para la mayoría de los problemas de salud. Puede diagnosticar, tratar enfermedades comunes y derivarte a especialistas si es necesario."
+            ],
+            "detalles_adicionales": "El médico general se encarga de la atención primaria, incluyendo chequeos de rutina, manejo de enfermedades crónicas leves, vacunación y educación para la salud. Es fundamental para un seguimiento integral de tu bienestar.",
+            "next_context": null,
+            "specific_prompt": "¿Necesitas más detalles sobre esta especialidad, o quieres saber sobre **agendar una cita** con ella?"
+        },
+        "internista": {
+            "preguntas": [
+                "internista",
+                "medico internista",
+                "medicina interna"
+            ],
+            "respuestas": [
+                "Un internista se especializa en el diagnóstico y tratamiento de enfermedades complejas en adultos, abarcando múltiples sistemas del cuerpo."
+            ],
+            "detalles_adicionales": "Los internistas son expertos en diagnósticos difíciles y en el manejo de pacientes con varias enfermedades al mismo tiempo. Tratan condiciones como diabetes, hipertensión, enfermedades tiroideas y problemas digestivos complejos.",
+            "next_context": null,
+            "specific_prompt": "¿Necesitas más detalles sobre esta especialidad, o quieres saber sobre **agendar una cita** con ella?"
+        },
+        "neumologo": {
+            "preguntas": [
+                "neumologo",
+                "pulmonologo",
+                "doctor de pulmones",
+                "respiratorio"
+            ],
+            "respuestas": [
+                "Un neumólogo se especializa en enfermedades de los pulmones y el sistema respiratorio."
+            ],
+            "detalles_adicionales": "Los neumólogos tratan asma, EPOC, bronquitis, neumonía, fibrosis pulmonar y apnea del sueño. Realizan pruebas de función pulmonar y broncoscopias. Son clave para problemas de respiración persistentes.",
+            "next_context": null,
+            "specific_prompt": "¿Necesitas más detalles sobre esta especialidad, o quieres saber sobre **agendar una cita** con ella?"
+        },
+        "otorrinolaringologo": {
+            "preguntas": [
+                "otorrino",
+                "doctor de oidos",
+                "doctor de nariz",
+                "doctor de garganta"
+            ],
+            "respuestas": [
+                "Un otorrinolaringólogo (u Otorrino) trata problemas de oído, nariz y garganta, así como estructuras relacionadas de cabeza y cuello."
+            ],
+            "detalles_adicionales": "Los otorrinolaringólogos manejan infecciones de oído, sinusitis, amigdalitis, problemas de audición, vértigo, ronquidos y alergias nasales. También realizan cirugías relacionadas.",
+            "next_context": null,
+            "specific_prompt": "¿Necesitas más detalles sobre esta especialidad, o quieres saber sobre **agendar una cita** con ella?"
+        },
+        "gastroenterologo": {
+            "preguntas": [
+                "gastroenterologo",
+                "doctor del estomago",
+                "digestologo",
+                "digestivo"
+            ],
+            "respuestas": [
+                "Un gastroenterólogo se especializa en enfermedades del sistema digestivo, incluyendo esófago, estómago, intestinos, hígado y páncreas."
+            ],
+            "detalles_adicionales": "Los gastroenterólogos diagnostican y tratan reflujo, úlceras, síndrome de intestino irritable, enfermedad de Crohn, colitis ulcerosa, pancreatitis, hepatitis y problemas de vesícula. Realizan endoscopias y colonoscopias.",
+            "next_context": null,
+            "specific_prompt": "¿Necesitas más detalles sobre esta especialidad, o quieres saber sobre **agendar una cita** con ella?"
+        },
+        "neurólogo": {
+            "preguntas": [
+                "neurólogo",
+                "doctor del cerebro",
+                "nervios",
+                "neurologo"
+            ],
+            "respuestas": [
+                "Un neurólogo diagnostica y trata trastornos del cerebro, la médula espinal y el sistema nervioso."
+            ],
+            "detalles_adicionales": "Los neurólogos atienden migrañas, epilepsia, accidentes cerebrovasculares, Parkinson, esclerosis múltiple, neuropatías y demencia. Realizan pruebas como electroencefalogramas y resonancias magnéticas para el diagnóstico.",
+            "next_context": null,
+            "specific_prompt": "¿Necesitas más detalles sobre esta especialidad, o quieres saber sobre **agendar una cita** con ella?"
+        },
+        "ortopeda": {
+            "preguntas": [
+                "ortopeda",
+                "traumatologo",
+                "doctor de huesos",
+                "articulaciones",
+                "musculos"
+            ],
+            "respuestas": [
+                "Un ortopeda (o traumatólogo) se especializa en el sistema musculoesquelético: huesos, articulaciones, ligamentos, tendones y músculos."
+            ],
+            "detalles_adicionales": "Los ortopedas tratan fracturas, esguinces, artritis, hernias discales, lesiones deportivas y problemas de espalda o rodilla. Pueden ofrecer tratamientos no quirúrgicos o realizar cirugías ortopédicas.",
+            "next_context": null,
+            "specific_prompt": "¿Necesitas más detalles sobre esta especialidad, o quieres saber sobre **agendar una cita** con ella?"
+        },
+        "alergologo": {
+            "preguntas": [
+                "alergologo",
+                "alergias",
+                "reacciones alergicas"
+            ],
+            "respuestas": [
+                "Un alergólogo diagnostica y trata alergias, asma y trastornos del sistema inmunitario."
+            ],
+            "detalles_adicionales": "Los alergólogos realizan pruebas de alergia para identificar la causa de reacciones en piel, respiratorias (rinitis, asma) o alimentarias. Recetan antihistamínicos, inhaladores y pueden administrar inmunoterapia (vacunas para alergia).",
+            "next_context": null,
+            "specific_prompt": "¿Necesitas más detalles sobre esta especialidad, o quieres saber sobre **agendar una cita** con ella?"
+        },
+        "cardiólogo": {
+            "preguntas": [
+                "cardiologo",
+                "doctor del corazon",
+                "corazon",
+                "enfermedades cardiacas"
+            ],
+            "respuestas": [
+                "Un cardiólogo se especializa en el diagnóstico y tratamiento de enfermedades del corazón y del sistema circulatorio."
+            ],
+            "detalles_adicionales": "Un cardiólogo puede realizar pruebas como electrocardiogramas, ecocardiogramas, y estudios de estrés. Tratan condiciones como hipertensión, arritmias, insuficiencia cardíaca y enfermedades de las arterias coronarias.",
+            "next_context": null,
+            "specific_prompt": "¿Necesitas más detalles sobre esta especialidad, o quieres saber sobre **agendar una cita** con ella?"
+        },
+        "reumatologo": {
+            "preguntas": [
+                "reumatologo",
+                "enfermedades reumaticas",
+                "artritis",
+                "dolor articular"
+            ],
+            "respuestas": [
+                "Un reumatólogo diagnostica y trata enfermedades que afectan las articulaciones, músculos y huesos, incluyendo trastornos autoinmunes e inflamatorios."
+            ],
+            "detalles_adicionales": "Los reumatólogos manejan artritis reumatoide, lupus, gota, fibromialgia, osteoporosis y otras enfermedades autoinmunes que causan dolor e inflamación. Su enfoque es mejorar la calidad de vida y prevenir el daño articular.",
+            "next_context": null,
+            "specific_prompt": "¿Necesitas más detalles sobre esta especialidad, o quieres saber sobre **agendar una cita** con ella?"
+        },
+        "dermatólogo": {
+            "preguntas": [
+                "dermatologo",
+                "doctor de la piel",
+                "piel",
+                "cabello",
+                "uñas"
+            ],
+            "respuestas": [
+                "Un dermatólogo se especializa en el diagnóstico y tratamiento de enfermedades de la piel, el cabello y las uñas."
+            ],
+            "detalles_adicionales": "Los dermatólogos tratan acné, eczema, psoriasis, infecciones de la piel, caída del cabello, lunares sospechosos y cáncer de piel. También realizan procedimientos estéticos y pequeños cirugías dermatológicas.",
+            "next_context": null,
+            "specific_prompt": "¿Necesitas más detalles sobre esta especialidad, o quieres saber sobre **agendar una cita** con ella?"
+        },
+        "pediatra": {
+            "preguntas": [
+                "pediatra",
+                "doctor de niños",
+                "medicina infantil"
+            ],
+            "respuestas": [
+                "Un pediatra es un médico especializado en la salud de bebés, niños y adolescentes, desde el nacimiento hasta la adolescencia temprana."
+            ],
+            "detalles_adicionales": "Los pediatras se encargan del crecimiento y desarrollo, vacunación, enfermedades infantiles comunes (gripe, sarampión), y asesoran a los padres sobre nutrición y seguridad. Son esenciales para el bienestar integral de los menores.",
+            "next_context": null,
+            "specific_prompt": "¿Necesitas más detalles sobre esta especialidad, o quieres saber sobre **agendar una cita** con ella?"
+        },
+        "ginecologo": {
+            "preguntas": [
+                "ginecologo",
+                "doctora de mujeres",
+                "salud femenina",
+                "ginecologia"
+            ],
+            "respuestas": [
+                "Un ginecólogo se especializa en la salud del sistema reproductor femenino, incluyendo el útero, los ovarios y las mamas."
+            ],
+            "detalles_adicionales": "Las ginecólogas ofrecen chequeos anuales, control prenatal, planificación familiar, manejo de menopausia, y tratan infecciones vaginales, endometriosis, quistes ováricos y otros problemas ginecológicos. También pueden realizar cirugías relacionadas.",
+            "next_context": null,
+            "specific_prompt": "¿Necesitas más detalles sobre esta especialidad, o quieres saber sobre **agendar una cita** con ella?"
+        },
+        "nutricionista": {
+            "preguntas": [
+                "nutricionista",
+                "dieta",
+                "alimentacion",
+                "peso"
+            ],
+            "respuestas": [
+                "Un nutricionista es un profesional de la salud que ayuda a las personas a mejorar su alimentación y hábitos nutricionales."
+            ],
+            "detalles_adicionales": "Los nutricionistas crean planes de alimentación personalizados para control de peso, manejo de enfermedades (diabetes, hipertensión), alergias alimentarias, o simplemente para llevar una vida más saludable. Ofrecen educación sobre alimentos y hábitos sostenibles.",
+            "next_context": null,
+            "specific_prompt": "¿Necesitas más detalles sobre esta especialidad, o quieres saber sobre **agendar una cita** con ella?"
+        },
+        "psicologo": {
+            "preguntas": [
+                "psicologo",
+                "terapia",
+                "salud mental",
+                "ansiedad",
+                "depresion"
+            ],
+            "respuestas": [
+                "Un psicólogo es un profesional de la salud mental que ofrece terapia y apoyo para problemas emocionales, conductuales y de pensamiento."
+            ],
+            "detalles_adicionales": "Los psicólogos ayudan con el estrés, ansiedad, depresión, duelo, problemas de relación y desarrollo personal. Utilizan diversas técnicas terapéuticas para mejorar el bienestar emocional y la resiliencia. No recetan medicamentos.",
+            "next_context": null,
+            "specific_prompt": "¿Necesitas más detalles sobre esta especialidad, o quieres saber sobre **agendar una cita** con ella?"
+        },
+        "psiquiatra": {
+            "preguntas": [
+                "psiquiatra",
+                "medico de salud mental",
+                "medicamentos salud mental"
+            ],
+            "respuestas": [
+                "Un psiquiatra es un médico especializado en el diagnóstico y tratamiento de trastornos mentales, incluyendo la prescripción de medicamentos si es necesario."
+            ],
+            "detalles_adicionales": "Los psiquiatras evalúan y tratan condiciones como esquizofrenia, trastorno bipolar, depresión severa y trastornos de ansiedad con un enfoque médico. Pueden combinar terapia con medicamentos y trabajan en conjunto con psicólogos.",
+            "next_context": null,
+            "specific_prompt": "¿Necesitas más detalles sobre esta especialidad, o quieres saber sobre **agendar una cita** con ella?"
+        }
+    },
+    "preguntas_generales": {
+        "agendar_cita": {
+            "preguntas": [
+                "agendar cita",
+                "como agendo una cita",
+                "quiero una cita",
+                "reservar cita",
+                "cita medica",
+                "citas",
+                "pedir cita",
+                "necesito una cita"
+            ],
+            "respuestas": [
+                "Para agendar tu cita, puedes hacerlo de estas tres maneras: 1) Llamando al **2234-5678**, 2) En nuestra web **www.clinicaprueba.com**, o 3) Presencialmente."
+            ],
+            "next_context": "agendar_cita_opciones",
+            "specific_prompt": "¿Cuál de estas opciones prefieres?"
+        },
+        "horarios": {
+            "preguntas": [
+                "horarios",
+                "a que hora abren",
+                "cuando abren",
+                "cuando cierran",
+                "horario de atencion",
+                "horario clinica",
+                "sus horarios",
+                "que horarios tienen",
+                "horas de apertura",
+                "horas de cierre",
+                "atienden fines de semana"
+            ],
+            "respuestas": [
+                "Nuestros horarios de atención son de Lunes a Viernes de **8:00 AM a 5:00 PM** y Sábados de **8:00 AM a 12:00 PM**. Los domingos estamos cerrados.",
+                "Puedes visitarnos de lunes a viernes, de 8 de la mañana a 5 de la tarde. Los sábados abrimos hasta el mediodía (12:00 PM). Los domingos descansamos.",
+                "La clínica está abierta de 8:00 AM a 5:00 PM de lunes a viernes, y los sábados de 8:00 AM a 12:00 PM."
+            ],
+            "next_context": null,
+            "specific_prompt": "¿Hay algo más en lo que pueda ayudarte sobre la clínica?"
+        },
+        "contacto": {
+            "preguntas": [
+                "contacto",
+                "numero de telefono",
+                "telefono",
+                "donde estan ubicados",
+                "direccion",
+                "email",
+                "como contactar",
+                "redes sociales"
+            ],
+            "respuestas": [
+                "Puedes contactarnos llamando al **2234-5678**, visitando nuestra clínica en **Calle Principal #123, Colonia San Benito, San Salvador**, o enviándonos un correo a **info@clinicaprueba.com**. También estamos en Facebook e Instagram como @ClinicaPrueba."
+            ],
+            "next_context": null,
+            "specific_prompt": "¿Necesitas algún dato de contacto específico?"
+        },
+        "urgencias": {
+            "preguntas": [
+                "urgencias",
+                "atienden emergencias",
+                "es una emergencia",
+                "tienen emergencias",
+                "emergencia medica",
+                "situacion de emergencia"
+            ],
+            "respuestas": [
+                "Sí, atendemos urgencias. Si es una emergencia vital (que pone en riesgo la vida), por favor llama al **911** inmediatamente. Para urgencias que no ponen en riesgo la vida, puedes venir directamente a nuestra clínica."
+            ],
+            "next_context": null,
+            "specific_prompt": "¿Necesitas saber algo más sobre urgencias?"
+        },
+        "seguros_medicos": {
+            "preguntas": [
+                "aceptan seguros",
+                "seguros medicos",
+                "aseguradoras",
+                "con que seguros trabajan",
+                "cubren seguros"
+            ],
+            "respuestas": [
+                "Sí, trabajamos con varias aseguradoras. ¿Podrías decirme el nombre de tu aseguradora para verificar si tenemos convenio? Si no estás seguro, puedes llamar a nuestra recepción."
+            ],
+            "next_context": "seguro_especifico"
+        },
+        "documentos_nuevos_pacientes": {
+            "preguntas": [
+                "documentos para paciente nuevo",
+                "que necesito para registrarme",
+                "requisitos para ser paciente",
+                "como me registro",
+                "primeracita documentos"
+            ],
+            "respuestas": [
+                "Para registrarte como paciente nuevo, generalmente necesitarás tu **Documento Único de Identidad (DUI)** o pasaporte, y tu **carné de seguro médico** si aplica. Te recomendamos llegar unos minutos antes de tu cita."
+            ],
+            "next_context": null,
+            "specific_prompt": "¿Hay algo más sobre el registro que quieras saber?"
+        },
+        "historial_medico": {
+            "preguntas": [
+                "historial medico",
+                "como consigo mi historial",
+                "mi expediente clinico",
+                "copia de mi historial",
+                "expediente medico"
+            ],
+            "respuestas": [
+                "Para solicitar una copia de tu historial médico, por favor acércate a nuestra recepción con tu DUI. Te indicarán el proceso y los tiempos de entrega, según las regulaciones de privacidad."
+            ],
+            "next_context": null,
+            "specific_prompt": "¿Necesitas saber algo más sobre tu historial?"
+        },
+        "formas_pago": {
+            "preguntas": [
+                "formas de pago",
+                "como puedo pagar",
+                "metodos de pago",
+                "aceptan tarjeta",
+                "pago con tarjeta",
+                "efectivo"
+            ],
+            "respuestas": [
+                "Aceptamos pagos en efectivo, tarjetas de crédito y débito (Visa, Mastercard, American Express) y transferencias bancarias. Puedes consultar en recepción si tienes dudas sobre un método específico."
+            ],
+            "next_context": null,
+            "specific_prompt": "¿Hay alguna otra pregunta sobre pagos?"
+        },
+        "agradecimiento": {
+            "preguntas": [
+                "gracias",
+                "muchas gracias",
+                "te lo agradezco",
+                "gracias medibot",
+                "muy amable"
+            ],
+            "respuestas": [
+                "¡De nada! Estoy para servirte. ¿Hay algo más en lo que pueda ayudarte hoy?",
+                "Con gusto. Me alegra haberte ayudado. ¿Necesitas algo más?",
+                "Es un placer. ¡No dudes en preguntar si tienes más dudas!"
+            ],
+            "next_context": null
+        },
+        "despedida": {
+            "preguntas": [
+                "adios",
+                "hasta luego",
+                "nos vemos",
+                "chao",
+                "bye",
+                "me voy"
+            ],
+            "respuestas": [
+                "¡Hasta luego! Que tengas un excelente día. Recuerda que estoy aquí si me necesitas.",
+                "Adiós. Cuídate mucho. ¡Espero verte pronto!",
+                "Que te vaya bien. ¡No dudes en volver si tienes más preguntas!"
+            ],
+            "next_context": null
+        }
+    },
+    "prevencion_bienestar": {
+        "nutricionista": {
+            "preguntas": [
+                "nutricion",
+                "dieta",
+                "alimentacion",
+                "peso",
+                "nutricionista"
+            ],
+            "respuestas": [
+                "La nutrición es clave para la salud. Podemos ofrecerte consultas con nutricionistas para planes personalizados. Una dieta balanceada rica en frutas, verduras y proteínas es fundamental."
+            ],
+            "specific_prompt": "¿Te gustaría agendar una consulta con un nutricionista para un plan personalizado?",
+            "next_context": null
+        },
+        "salud_mental": {
+            "preguntas": [
+                "salud mental",
+                "estres",
+                "ansiedad",
+                "depresion",
+                "psicologo",
+                "psiquiatra"
+            ],
+            "respuestas": [
+                "La salud mental es tan importante como la física. Ofrecemos apoyo psicológico y psiquiátrico para ayudarte a manejar el estrés, la ansiedad, la depresión y otros desafíos. ¿Te gustaría saber más sobre nuestros servicios de salud mental?"
+            ],
+            "next_context": null
+        },
+        "chequeos_preventivos": {
+            "preguntas": [
+                "chequeos preventivos",
+                "revision general",
+                "examen medico"
+            ],
+            "respuestas": [
+                "Los chequeos preventivos regulares son esenciales para detectar problemas de salud a tiempo. Te ayudamos a programar exámenes de rutina y screenings según tu edad y factores de riesgo. ¿Necesitas información sobre qué chequeos son recomendables para ti?"
+            ],
+            "next_context": null
+        },
+        "vacunas": {
+            "preguntas": [
+                "vacunas",
+                "calendario de vacunacion",
+                "inmunizaciones"
+            ],
+            "respuestas": [
+                "Mantenemos actualizado nuestro calendario de vacunación para todas las edades. Las vacunas son fundamentales para prevenir enfermedades infecciosas y proteger tu salud. ¿Tienes alguna pregunta sobre vacunas específicas o necesitas agendar una cita para vacunación?"
+            ],
+            "next_context": null
+        }
+    },
+    "informacion_administrativa": {
+        "documentos_registro": {
+            "preguntas": [
+                "documentos para registrarme",
+                "requisitos de registro",
+                "que papeles necesito",
+                "que documentos",
+                "registro paciente nuevo"
+            ],
+            "respuestas": [
+                "Para registrarte como paciente nuevo, generalmente necesitarás tu Documento Único de Identidad (DUI) o pasaporte, y tu carné de seguro médico si aplica. Te recomendamos llegar unos minutos antes de tu cita."
+            ],
+            "next_context": null,
+            "specific_prompt": "¿Hay algo más sobre el registro que quieras saber?"
+        },
+        "aceptan_seguros": {
+            "preguntas": [
+                "aceptan seguros",
+                "seguros medicos",
+                "con que seguros trabajan",
+                "cubren seguros",
+                "seguro de salud"
+            ],
+            "respuestas": [
+                "Sí, trabajamos con varias aseguradoras. ¿Podrías decirme el nombre de tu aseguradora para verificar si tenemos convenio? Si no estás seguro, puedes llamar a nuestra recepción."
+            ],
+            "next_context": "seguro_especifico"
+        },
+        "solicitar_historial": {
+            "preguntas": [
+                "solicitar historial medico",
+                "como pido mi historial",
+                "quiero mi expediente",
+                "expediente medico",
+                "copia historial"
+            ],
+            "respuestas": [
+                "Para solicitar una copia de tu historial médico, por favor acércate a nuestra recepción con tu DUI. Te indicarán el proceso y los tiempos de entrega, según las regulaciones de privacidad."
+            ],
+            "next_context": null,
+            "specific_prompt": "¿Necesitas saber algo más sobre tu historial?"
+        },
+        "formas_pago_admin": {
+            "preguntas": [
+                "formas de pago",
+                "metodos de pago",
+                "como pagar",
+                "aceptan tarjeta",
+                "pago con tarjeta",
+                "efectivo",
+                "transferencia"
+            ],
+            "respuestas": [
+                "Aceptamos pagos en efectivo, tarjetas de crédito y débito (Visa, Mastercard, American Express) y transferencias bancarias. Puedes consultar en recepción si tienes dudas sobre un método específico."
+            ],
+            "next_context": null,
+            "specific_prompt": "¿Hay alguna otra pregunta sobre pagos?"
+        },
+        "facturacion": {
+            "preguntas": [
+                "facturacion",
+                "necesito factura",
+                "como obtengo factura",
+                "pago de factura"
+            ],
+            "respuestas": [
+                "Para cualquier asunto de facturación, por favor acércate a nuestra oficina administrativa o contáctanos por teléfono al **2234-5678**. Ellos te asistirán con los detalles de tu factura."
+            ],
+            "next_context": null,
+            "specific_prompt": "¿Tienes otra pregunta administrativa?"
+        }
+    },
+    "bromas": {
+        "chiste_medico": {
+            "preguntas": [
+                "hazme un chiste",
+                "cuentame un chiste",
+                "bromea",
+                "hazme reir",
+                "cuentame un chiste de medicos"
+            ],
+            "respuestas": [
+                "¿Qué le dice un ojo al otro? Estamos conectados por la nariz. ¡Jeje!",
+                "¿Por qué los esqueletos son tan tranquilos? Porque nada les llega hasta los huesos. ¡Auch!",
+                "¿Qué hace un terapeuta con un paciente que se cree caballo? Le deja la 'crin'-dencial de la terapia en la mesa. ¡Uf, qué chiste más malo!",
+                "Un paciente le dice al doctor: 'Doctor, me duele aquí y me duele allá'. El doctor le responde: '¡Ah! Lo que usted tiene es el cuerpo completo'."
+            ]
+        },
+        "eres_un_robot": {
+            "preguntas": [
+                "eres un robot",
+                "eres humano",
+                "eres un bot",
+                "eres real"
+            ],
+            "respuestas": [
+                "Soy Medibot 🤖, tu asistente de salud virtual. Fui diseñado para ayudarte con información, no para ser un humano... ¡aunque a veces me gustaría tener brazos para darte un abrazo de ánimo!",
+                "Soy un programa de inteligencia artificial, pero estoy aquí para asistirte con toda la información que necesitas.",
+                "Mis circuitos están muy bien, gracias por preguntar. ¡Soy un bot listo para ayudarte!"
+            ]
+        }
+    },
+    "general": {
+        "nombre_bot": {
+            "preguntas": [
+                "como te llamas",
+                "cual es tu nombre",
+                "eres medibot",
+                "tu nombre"
+            ],
+            "respuestas": [
+                "Soy Medibot 🤖, tu asistente de salud en línea.",
+                "Mi nombre es Medibot.",
+                "Puedes llamarme Medibot."
+            ],
+            "next_context": null
+        },
+        "edad_bot": {
+            "preguntas": [
+                "tu edad",
+                "cuantos años tienes",
+                "que edad tienes"
+            ],
+            "respuestas": [
+                "Soy un programa de computadora, no tengo edad.",
+                "No tengo edad, ¡solo bits y bytes!",
+                "Soy un asistente virtual, no envejezco."
+            ],
+            "next_context": null
+        },
+        "gracias": {
+            "preguntas": [
+                "gracias",
+                "muchas gracias",
+                "te agradezco",
+                "gracias por tu ayuda"
+            ],
+            "respuestas": [
+                "De nada, estoy para servirte.",
+                "Es un placer ayudarte.",
+                "Para eso estoy."
+            ],
+            "next_context": null
+        },
+        "despedida": {
+            "preguntas": [
+                "adios",
+                "hasta luego",
+                "bye",
+                "chao",
+                "que te vaya bien",
+                "ya me voy",
+                "no gracias",
+                "nada mas"
+            ],
+            "respuestas": [
+                "¡Hasta pronto! Que tengas un excelente día.",
+                "Adiós, fue un gusto ayudarte. ¡Que te mejores!",
+                "Cuídate mucho. Si necesitas algo, no dudes en volver.",
+                "Gracias por tu visita, ¡que estés muy bien!"
+            ],
+            "next_context": null
+        },
+        "como_estas": {
+            "preguntas": [
+                "como estas",
+                "que tal estas"
+            ],
+            "respuestas": [
+                "Estoy funcionando perfectamente, ¡listo para ayudarte!",
+                "Muy bien, gracias. ¿Y tú?",
+                "Siempre listo para asistir en lo que necesites."
+            ],
+            "next_context": null
+        }
+    }
+}
