@@ -1,5 +1,5 @@
 :root {
-    --primary-color: #2a7fba;
+    --primary-color: #2876ae;
     /* Azul médico profesional */
     --primary-dark: #1a5f8b;
     /* Azul más oscuro */
@@ -14,7 +14,7 @@
     --text-light: #666;
     /* Color de texto secundario */
     --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    --background: #edf2fa;
+    --background: #dae6f8;
     /* Fondo azul muy suave */
     --border-radius: 18px;
     /* Bordes redondeados */

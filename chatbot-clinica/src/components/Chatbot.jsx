@@ -108,18 +108,18 @@ const Chatbot = () => {
         };
 
         const sintomaEspecialistaMap = {
-            "fiebre_alta": [{esp: "médico general", weight: 1}, {esp: "internista", weight: 0.8}],
-            "dolor_garganta": [{esp: "médico general", weight: 1}, {esp: "otorrinolaringólogo", weight: 1.5}],
-            "tos_persistente": [{esp: "médico general", weight: 1}, {esp: "neumólogo", weight: 1.8}, {esp: "alergólogo", weight: 1.2}],
-            "molestias_respirar": [{esp: "médico general", weight: 1}, {esp: "neumólogo", weight: 2}, {esp: "cardiólogo", weight: 1.5}],
-            "dolor_cabeza": [{esp: "médico general", weight: 1}, {esp: "neurólogo", weight: 1.5}],
-            "dolor_cuerpo": [{esp: "médico general", weight: 1}, {esp: "reumatólogo", weight: 0.8}, {esp: "ortopeda", weight: 0.8}],
-            "dolor_abdominal": [{esp: "médico general", weight: 1}, {esp: "gastroenterólogo", weight: 1.5}],
-            "dolor_espalda": [{esp: "médico general", weight: 1}, {esp: "ortopeda", weight: 1.5}],
-            "nauseas_vomitos": [{esp: "médico general", weight: 1}, {esp: "gastroenterólogo", weight: 1.2}],
-            "erupciones_piel": [{esp: "médico general", weight: 1}, {esp: "dermatólogo", weight: 1.8}, {esp: "alergólogo", weight: 1.2}],
-            "mareos": [{esp: "médico general", weight: 1}, {esp: "neurólogo", weight: 1.2}, {esp: "otorrinolaringólogo", weight: 1}],
-            "palpitaciones": [{esp: "médico general", weight: 1}, {esp: "cardiólogo", weight: 2}]
+            "fiebre_alta": [{ esp: "médico general", weight: 1 }, { esp: "internista", weight: 0.8 }],
+            "dolor_garganta": [{ esp: "médico general", weight: 1 }, { esp: "otorrinolaringólogo", weight: 1.5 }],
+            "tos_persistente": [{ esp: "médico general", weight: 1 }, { esp: "neumólogo", weight: 1.8 }, { esp: "alergólogo", weight: 1.2 }],
+            "molestias_respirar": [{ esp: "médico general", weight: 1 }, { esp: "neumólogo", weight: 2 }, { esp: "cardiólogo", weight: 1.5 }],
+            "dolor_cabeza": [{ esp: "médico general", weight: 1 }, { esp: "neurólogo", weight: 1.5 }],
+            "dolor_cuerpo": [{ esp: "médico general", weight: 1 }, { esp: "reumatólogo", weight: 0.8 }, { esp: "ortopeda", weight: 0.8 }],
+            "dolor_abdominal": [{ esp: "médico general", weight: 1 }, { esp: "gastroenterólogo", weight: 1.5 }],
+            "dolor_espalda": [{ esp: "médico general", weight: 1 }, { esp: "ortopeda", weight: 1.5 }],
+            "nauseas_vomitos": [{ esp: "médico general", weight: 1 }, { esp: "gastroenterólogo", weight: 1.2 }],
+            "erupciones_piel": [{ esp: "médico general", weight: 1 }, { esp: "dermatólogo", weight: 1.8 }, { esp: "alergólogo", weight: 1.2 }],
+            "mareos": [{ esp: "médico general", weight: 1 }, { esp: "neurólogo", weight: 1.2 }, { esp: "otorrinolaringólogo", weight: 1 }],
+            "palpitaciones": [{ esp: "médico general", weight: 1 }, { esp: "cardiólogo", weight: 2 }]
         };
 
         sintomas.forEach(sintomaKey => {
@@ -141,7 +141,7 @@ const Chatbot = () => {
                 mejorEspecialista = esp;
             } else if (especialistaScores[esp] === maxScore) {
                 if (esp !== "médico general" && maxScore > 0) {
-                     mejorEspecialista = esp;
+                    mejorEspecialista = esp;
                 }
             }
         }
@@ -175,10 +175,11 @@ const Chatbot = () => {
         let handled = false;
 
         const yesKeywords = ["si", "sí", "por favor", "me gustaria", "claro", "afirmativo", "definitivamente", "hazlo", "quiero", "ok", "adelante", "dame uno", "recomiendame uno", "agendala", "si agendala", "si porfavor"];
-        const noKeywords = ["no", "no gracias", "no quiero", "negativo", "omitir", "ahora no", "aun no", "nada mas"];
-        const acknowledgeKeywords = ["ok", "oki", "entendido", "vale", "listo", "perfecto", "de acuerdo"];
+        // Modificación: 'solamente', 'solo eso' se manejarán de forma específica en `pregunta_general_ayuda`
+        const noKeywords = ["no", "no gracias", "no quiero", "negativo", "omitir", "ahora no", "aun no", "nada mas", "es todo", "suficiente"];
+        const acknowledgeKeywords = ["ok", "oki", "entendido", "vale", "listo", "perfecto", "de acuerdo", "gracias"];
         const masDetallesKeywords = ["mas detalles", "dime mas", "explicame mas", "informacion adicional", "dame mas informacion", "mas info"];
-
+        const sintomasKeywords = ["sintomas", "sintoma", "mis sintomas", "que me pasa"]; // Nuevas palabras clave para "sintomas"
 
         // --- Prioridad 0: Despedidas ---
         const despedidaMatches = getMatchingIntents(textoNormalizado, {
@@ -229,100 +230,7 @@ const Chatbot = () => {
             return;
         }
 
-        // --- Prioridad 3: Lógica para manejar "Sí", "No" en función de la última pregunta del bot ---
-        if (lastBotQuestion) {
-            // Manejar confirmación de agendar cita con especialista (ya sea por recomendación o especialidad directa)
-            if (lastBotQuestion.startsWith("agendar_cita_")) {
-                const especialistaRecomendado = lastBotQuestion.replace("agendar_cita_recomendacion_", ""); // Extrae el nombre si viene de recomendación
-                if (yesKeywords.some(keyword => textoNormalizado.includes(keyword))) {
-                    const esp = (especialistaRecomendado === "agendar_cita_especialidad" || especialistaRecomendado === "") ? "un especialista" : `un ${especialistaRecomendado.replace(/_/g, ' ')}`;
-                    respuestaBot = `¡Excelente! Para agendar tu cita con ${esp}, puedes hacerlo de estas tres maneras: 1) Llamando al **2234-5678**, 2) En nuestra web **www.clinicaprueba.com**, o 3) Presencialmente. ¿Cuál de estas opciones prefieres?`;
-                    setContextoConversacion("agendar_cita_opciones");
-                    setLastBotQuestion("agendar_cita_opciones_pref");
-                    agregarMensaje("bot", respuestaBot);
-                    setSintomasAcumulados([]);
-                    // Mantener lastSpecialtyMentioned si viene de una especialidad para el agendamiento
-                    // Si viene de recomendación de síntomas, lastSpecialtyMentioned puede ser null o el especialista recomendado
-                    handled = true;
-                    return;
-                } else if (noKeywords.some(keyword => textoNormalizado.includes(keyword))) {
-                    respuestaBot = "De acuerdo, no agendaremos una cita en este momento. ¿Hay algo más en lo que pueda ayudarte, o prefieres volver al 'menú' principal?";
-                    setContextoConversacion(null);
-                    setLastBotQuestion(null);
-                    setSintomasAcumulados([]);
-                    setLastSpecialtyMentioned(null);
-                    agregarMensaje("bot", respuestaBot);
-                    handled = true;
-                    return;
-                }
-            }
-            // Manejar confirmación para recomendar especialista final (después de síntomas)
-            else if (lastBotQuestion === "recomendar_especialista_final") {
-                if (yesKeywords.some(keyword => textoNormalizado.includes(keyword))) {
-                    const recomendacion = recomendarEspecialista(sintomasAcumulados);
-                    respuestaBot = `${recomendacion.recomendacion_detallada} ¿Te gustaría que te ayude a **agendar una cita** con un **${recomendacion.especialista}**?`;
-                    setLastBotQuestion(`agendar_cita_recomendacion_${recomendacion.especialista}`);
-                    setContextoConversacion(null);
-                    setLastSpecialtyMentioned(recomendacion.especialista.replace(/ /g, '_')); // Guardar el especialista recomendado
-                    agregarMensaje("bot", respuestaBot);
-                    handled = true;
-                    return;
-                } else if (noKeywords.some(keyword => textoNormalizado.includes(keyword))) {
-                    respuestaBot = "De acuerdo, no te haré una recomendación en este momento. ¿Hay algo más sobre tus síntomas o especialidades que quieras saber, o prefieres volver al 'menú' principal?";
-                    setContextoConversacion(null);
-                    setLastBotQuestion(null);
-                    setLastSpecialtyMentioned(null);
-                    setSintomasAcumulados([]);
-                    agregarMensaje("bot", respuestaBot);
-                    handled = true;
-                    return;
-                }
-            }
-            // Manejar respuesta a preguntas generales de confirmación (ej. "¿Hay algo más en lo que pueda ayudarte?")
-            else if (lastBotQuestion === "pregunta_general_ayuda") {
-                if (yesKeywords.some(keyword => textoNormalizado.includes(keyword))) {
-                    respuestaBot = "¡Claro! Dime, ¿qué necesitas saber?";
-                    setContextoConversacion(null);
-                    setLastBotQuestion(null);
-                    setLastSpecialtyMentioned(null);
-                    agregarMensaje("bot", respuestaBot);
-                    handled = true;
-                    return;
-                } else if (noKeywords.some(keyword => textoNormalizado.includes(keyword))) {
-                    respuestaBot = respuestasData.general.despedida.respuestas[Math.floor(Math.random() * respuestasData.general.despedida.respuestas.length)];
-                    setContextoConversacion(null);
-                    setLastBotQuestion(null);
-                    setLastSpecialtyMentioned(null);
-                    agregarMensaje("bot", respuestaBot);
-                    handled = true;
-                    return;
-                }
-            }
-            // Manejar confirmación para agendar desde Prevención/Bienestar (ej. Nutricionista)
-            else if (lastBotQuestion.startsWith("agendar_desde_pb_")) {
-                const especialistaPB = lastBotQuestion.replace("agendar_desde_pb_", "");
-                if (yesKeywords.some(keyword => textoNormalizado.includes(keyword))) {
-                    respuestaBot = `¡Excelente! Para agendar tu cita con un **${especialistaPB.replace(/_/g, ' ')}**, puedes hacerlo de estas tres maneras: 1) Llamando al **2234-5678**, 2) En nuestra web **www.clinicaprueba.com**, o 3) Presencialmente. ¿Cuál de estas opciones prefieres?`;
-                    setContextoConversacion("agendar_cita_opciones");
-                    setLastBotQuestion("agendar_cita_opciones_pref");
-                    setLastSpecialtyMentioned(especialistaPB); // Asegura que sepa qué especialidad agendar
-                    agregarMensaje("bot", respuestaBot);
-                    handled = true;
-                    return;
-                } else if (noKeywords.some(keyword => textoNormalizado.includes(keyword))) {
-                    respuestaBot = "De acuerdo, no agendaremos una cita en este momento. ¿Hay algo más sobre prevención y bienestar que quieras saber, o prefieres volver al 'menú' principal?";
-                    setContextoConversacion("prevencion_bienestar"); // Vuelve al contexto de prevención
-                    setLastBotQuestion(null);
-                    setLastSpecialtyMentioned(null);
-                    agregarMensaje("bot", respuestaBot);
-                    handled = true;
-                    return;
-                }
-            }
-        }
-
-
-        // --- Prioridad 4: Manejo de la preferencia de agendar cita (web, telefono, presencial) ---
+        // --- Prioridad 3: Manejo de la preferencia de agendar cita (web, telefono, presencial) ---
         if (contextoConversacion === "agendar_cita_opciones" && lastBotQuestion === "agendar_cita_opciones_pref") {
             if (textoNormalizado.includes("web") || textoNormalizado.includes("en linea") || textoNormalizado.includes("internet") || textoNormalizado.includes("pagina")) {
                 respuestaBot = "¡Entendido! Para agendar tu cita en línea, por favor visita nuestra página web: **www.clinicaprueba.com/citas**. Es un proceso rápido y fácil.";
@@ -345,8 +253,6 @@ const Chatbot = () => {
             } else {
                 respuestaBot = "Disculpa, no entendí tu preferencia. ¿Prefieres agendar por **'web'**, por **'teléfono'** o **'presencialmente'** en la clínica? Si ya no deseas agendar, puedes escribir 'menú'.";
                 nuevoContexto = "agendar_cita_opciones";
-                // No reseteamos lastBotQuestion aquí, lo mantenemos para reintentar la elección.
-                // setLastSpecialtyMentioned(null); // No resetear aquí para mantener el contexto si intenta de nuevo
             }
             agregarMensaje("bot", respuestaBot);
             setContextoConversacion(nuevoContexto);
@@ -354,7 +260,102 @@ const Chatbot = () => {
             return;
         }
 
-        // --- Prioridad 5: Manejo de palabras de reconocimiento (oki, entendido, etc.) ---
+        // --- Prioridad 4: Lógica para manejar "Sí", "No" en función de la última pregunta del bot ---
+        if (lastBotQuestion) {
+            // Manejar confirmación de agendar cita con especialista (ya sea por recomendación o especialidad directa)
+            if (lastBotQuestion.startsWith("agendar_cita_")) {
+                const especialistaRecomendado = lastSpecialtyMentioned; // Usar lastSpecialtyMentioned que es más confiable
+                if (yesKeywords.some(keyword => textoNormalizado.includes(keyword))) {
+                    const esp = (especialistaRecomendado === "" || !especialistaRecomendado) ? "un especialista" : `un ${especialistaRecomendado.replace(/_/g, ' ')}`;
+                    respuestaBot = `¡Excelente! Para agendar tu cita con ${esp}, puedes hacerlo de estas tres maneras: 1) Llamando al **2234-5678**, 2) En nuestra web **www.clinicaprueba.com**, o 3) Presencialmente. ¿Cuál de estas opciones prefieres?`;
+                    setContextoConversacion("agendar_cita_opciones");
+                    setLastBotQuestion("agendar_cita_opciones_pref");
+                    agregarMensaje("bot", respuestaBot);
+                    setSintomasAcumulados([]); // Se resetea una vez que el agendamiento es aceptado
+                    handled = true;
+                    return;
+                } else if (noKeywords.some(keyword => textoNormalizado.includes(keyword))) {
+                    respuestaBot = "De acuerdo, no agendaremos una cita en este momento. ¿Hay algo más en lo que pueda ayudarte, o prefieres volver al 'menú' principal?";
+                    setContextoConversacion(null); // Resetea el contexto para una nueva consulta
+                    setLastBotQuestion("pregunta_general_ayuda"); // Pregunta general para continuar
+                    setSintomasAcumulados([]);
+                    setLastSpecialtyMentioned(null);
+                    agregarMensaje("bot", respuestaBot);
+                    handled = true;
+                    return;
+                }
+            }
+            // Manejar confirmación para recomendar especialista final (después de síntomas)
+            else if (lastBotQuestion === "recomendar_especialista_final") {
+                if (yesKeywords.some(keyword => textoNormalizado.includes(keyword))) {
+                    const recomendacion = recomendarEspecialista(sintomasAcumulados);
+                    respuestaBot = `${recomendacion.recomendacion_detallada} ¿Te gustaría que te ayude a **agendar una cita** con un **${recomendacion.especialista}**?`;
+                    setLastBotQuestion(`agendar_cita_recomendacion_${recomendacion.especialista}`);
+                    setContextoConversacion(null);
+                    setLastSpecialtyMentioned(recomendacion.especialista.replace(/ /g, '_')); // Guardar el especialista recomendado
+                    agregarMensaje("bot", respuestaBot);
+                    handled = true;
+                    return;
+                }
+                // Modificación: Si dice "no" o "solo eso", mantener el contexto de síntomas para permitir "sintomas"
+                else if (noKeywords.some(keyword => textoNormalizado.includes(keyword)) || textoNormalizado.includes("solo eso") || textoNormalizado.includes("solamente")) {
+                    respuestaBot = "De acuerdo, no te haré una recomendación en este momento. ¿Hay algo más sobre tus **síntomas** o **especialidades** que quieras saber, o prefieres volver al **'menú' principal**?";
+                    setContextoConversacion("sintomas_o_especialidades"); // Nuevo contexto para "sintomas" o "especialidades"
+                    setLastBotQuestion("pregunta_general_ayuda_sintomas_especialidades"); // Nuevo lastBotQuestion
+                    setLastSpecialtyMentioned(null);
+                    // Mantener síntomas acumulados si el usuario podría querer añadir más
+                    // setSintomasAcumulados([]); // No resetear si podría querer añadir más
+                    agregarMensaje("bot", respuestaBot);
+                    handled = true;
+                    return;
+                }
+            }
+            // Manejar respuesta a preguntas generales de confirmación (ej. "¿Hay algo más en lo que pueda ayudarte?")
+            // Modificación: Incluir "solamente" y "solo eso" aquí
+            else if (lastBotQuestion === "pregunta_general_ayuda" || lastBotQuestion === "pregunta_general_ayuda_sintomas_especialidades") {
+                if (yesKeywords.some(keyword => textoNormalizado.includes(keyword))) {
+                    respuestaBot = "¡Claro! Dime, ¿qué necesitas saber?";
+                    setContextoConversacion(null);
+                    setLastBotQuestion(null);
+                    setLastSpecialtyMentioned(null);
+                    agregarMensaje("bot", respuestaBot);
+                    handled = true;
+                    return;
+                } else if (noKeywords.some(keyword => textoNormalizado.includes(keyword)) || textoNormalizado.includes("solo eso") || textoNormalizado.includes("solamente")) {
+                    respuestaBot = respuestasData.general.despedida.respuestas[Math.floor(Math.random() * respuestasData.general.despedida.respuestas.length)];
+                    setContextoConversacion(null);
+                    setLastBotQuestion(null);
+                    setLastSpecialtyMentioned(null);
+                    agregarMensaje("bot", respuestaBot);
+                    handled = true;
+                    return;
+                }
+            }
+            // Manejar confirmación para agendar desde Prevención/Bienestar (ej. Nutricionista)
+            else if (lastBotQuestion.startsWith("agendar_desde_pb_")) {
+                const especialistaPB = lastSpecialtyMentioned; // Usar lastSpecialtyMentioned
+                if (yesKeywords.some(keyword => textoNormalizado.includes(keyword))) {
+                    respuestaBot = `¡Excelente! Para agendar tu cita con un **${especialistaPB.replace(/_/g, ' ')}**, puedes hacerlo de estas tres maneras: 1) Llamando al **2234-5678**, 2) En nuestra web **www.clinicaprueba.com**, o 3) Presencialmente. ¿Cuál de estas opciones prefieres?`;
+                    setContextoConversacion("agendar_cita_opciones");
+                    setLastBotQuestion("agendar_cita_opciones_pref");
+                    // lastSpecialtyMentioned ya está seteado, no es necesario re-setear aquí
+                    agregarMensaje("bot", respuestaBot);
+                    handled = true;
+                    return;
+                } else if (noKeywords.some(keyword => textoNormalizado.includes(keyword)) || textoNormalizado.includes("solo eso") || textoNormalizado.includes("solamente")) {
+                    respuestaBot = "De acuerdo, no agendaremos una cita en este momento. ¿Hay algo más sobre prevención y bienestar que quieras saber, o prefieres volver al 'menú' principal?";
+                    setContextoConversacion("prevencion_bienestar"); // Vuelve al contexto de prevención
+                    setLastBotQuestion(null);
+                    setLastSpecialtyMentioned(null);
+                    agregarMensaje("bot", respuestaBot);
+                    handled = true;
+                    return;
+                }
+            }
+        }
+
+
+        // --- Prioridad 5: Manejo de palabras de reconocimiento (oki, entendido, gracias) ---
         if (acknowledgeKeywords.some(keyword => textoNormalizado.includes(keyword)) && !handled) {
             respuestaBot = "De nada. ¿Hay algo más en lo que pueda ayudarte o quieres volver al menú?";
             setContextoConversacion(null);
@@ -437,9 +438,9 @@ const Chatbot = () => {
         }
 
         // --- Prioridad 10: Activación robusta de la recomendación de especialista (después de síntomas) ---
-        const activarRecomendacionKeywords = ["ya te dije todo", "ya te conte todo", "que hago", "que me recomiendas", "y ahora que", "dime que tengo", "cual es mi diagnostico", "recomiendame uno", "hazlo", "recomienda un especialista", "dame una recomendacion", "dime el especialista", "solo eso", "es todo", "siguiente"];
+        const activarRecomendacionKeywords = ["ya te dije todo", "ya te conte todo", "que hago", "que me recomiendas", "y ahora que", "dime que tengo", "cual es mi diagnostico", "recomiendame uno", "hazlo", "recomienda un especialista", "dame una recomendacion", "dime el especialista", "es todo", "siguiente"];
         if (activarRecomendacionKeywords.some(keyword => textoNormalizado.includes(keyword)) && contextoConversacion === "sintomas" && !handled) {
-             if (sintomasAcumulados.length > 0) {
+            if (sintomasAcumulados.length > 0) {
                 const recomendacion = recomendarEspecialista(sintomasAcumulados);
                 respuestaBot = `${recomendacion.recomendacion_detallada} ¿Te gustaría que te ayude a **agendar una cita** con un **${recomendacion.especialista}**?`;
                 setLastBotQuestion(`agendar_cita_recomendacion_${recomendacion.especialista}`);
@@ -470,7 +471,6 @@ const Chatbot = () => {
                 "historial_medico": respuestasData.preguntas_generales.historial_medico,
                 "formas_pago": respuestasData.preguntas_generales.formas_pago,
                 "agendar_cita": respuestasData.preguntas_generales.agendar_cita,
-                "gracias": respuestasData.general.gracias,
                 "como_estas": respuestasData.general.como_estas
             });
 
@@ -483,8 +483,6 @@ const Chatbot = () => {
                     if (bestMatch.key !== "agendar_cita") {
                         setLastBotQuestion("pregunta_general_ayuda");
                     }
-                } else if (bestMatch.key === "gracias") {
-                     setLastBotQuestion("pregunta_general_ayuda");
                 } else {
                     setLastBotQuestion(null);
                 }
@@ -500,6 +498,28 @@ const Chatbot = () => {
                 }
                 agregarMensaje("bot", respuestaBot);
                 handled = true;
+                return;
+            }
+        }
+
+        // Modificación: Manejar "sintomas" o "especialidades" si el contexto anterior lo permite
+        if (!handled && (contextoConversacion === "sintomas_o_especialidades" || lastBotQuestion === "pregunta_general_ayuda_sintomas_especialidades")) {
+            if (sintomasKeywords.some(keyword => textoNormalizado.includes(keyword))) {
+                respuestaBot = "De acuerdo, volvamos a los **síntomas**. ¿Qué síntoma te preocupa ahora? Por ejemplo: 'me duele la cabeza' o 'tengo fiebre'. Si ya terminaste, puedes decir 'gracias' o 'adiós'.";
+                setContextoConversacion("sintomas");
+                setLastBotQuestion(null);
+                setLastSpecialtyMentioned(null);
+                setSintomasAcumulados([]); // Reseteamos síntomas si el usuario vuelve al inicio de síntomas
+                handled = true;
+                agregarMensaje("bot", respuestaBot);
+                return;
+            } else if (textoNormalizado.includes("especialidades") || textoNormalizado.includes("especialidad")) {
+                respuestaBot = "Entendido, hablemos de **especialidades médicas**. ¿Qué especialidad te interesa o qué tipo de doctor buscas? Por ejemplo: 'dermatólogo' o 'cardiólogo'.";
+                setContextoConversacion("especialidades");
+                setLastBotQuestion(null);
+                setLastSpecialtyMentioned(null);
+                handled = true;
+                agregarMensaje("bot", respuestaBot);
                 return;
             }
         }
@@ -704,7 +724,7 @@ const Chatbot = () => {
                 nuevoContexto = null;
                 setLastBotQuestion("pregunta_general_ayuda");
                 setLastSpecialtyMentioned(null);
-            } else if (noKeywords.some(keyword => textoNormalizado.includes(keyword))) {
+            } else if (noKeywords.some(keyword => textoNormalizado.includes(keyword)) || textoNormalizado.includes("solo eso") || textoNormalizado.includes("solamente")) {
                 respuestaBot = "De acuerdo, no hay problema. ¿Hay algo más en lo que pueda ayudarte o quieres volver al menú?";
                 nuevoContexto = null;
                 setLastBotQuestion("pregunta_general_ayuda");

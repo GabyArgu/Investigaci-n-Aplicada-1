@@ -94,10 +94,10 @@ Durante el desarrollo de este proyecto, se utilizó GitHub Copilot como herramie
 Este uso permitió una mayor velocidad de desarrollo, coherencia en la escritura de funciones y mejores sugerencias para frases contextuales en el flujo de conversación.
 
 ## 🔎 Referencias y Bibliografía
-
+```
 [1] GitHub, Inc. & OpenAI, "Introducing GitHub Copilot," GitHub, 2021. [Online]. Disponible en: https://github.com/features/copilot
 [2] OpenAI, "Guía de uso de ChatGPT," OpenAI, 2023. [Online]. Disponible en: https://platform.openai.com/docs/guides/gpt
 [3] S. J. Russell y P. Norvig, "Artificial Intelligence: A Modern Approach," 4th ed., Pearson, 2020.
 [4] J. McTear, "Conversational AI: Dialogue Systems, Conversational Agents, and Chatbots," Morgan & Claypool, 2020.
 [5] Microsoft, "Documentación de Copilot en GitHub," Microsoft Learn, 2024. [Online]. Disponible en: https://learn.microsoft.com/es-es/copilot/github/
-
+```
