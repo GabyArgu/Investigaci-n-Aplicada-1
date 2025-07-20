@@ -177,20 +177,6 @@ const Chatbot = () => {
         const precioEspecificoKeywords = ["cuanto vale", "cual es el precio", "precio de", "costo de", "valor de", "cuanto cuesta"];
 
 
-        // --- PRIORIDAD 1: Detección de intenciones de precios específicos (ej. "cuánto cuesta un dermatólogo") ---
-        const directPriceSpecialtyMatches = getMatchingIntents(textoNormalizado, respuestasData.precios_consultas_especificos);
-
-        if (directPriceSpecialtyMatches.length > 0) {
-            const bestMatch = directPriceSpecialtyMatches[0];
-            respuestaBot = bestMatch.entry.respuestas[Math.floor(Math.random() * bestMatch.entry.respuestas.length)];
-            respuestaBot += " ¿Te gustaría agendar una cita con esta especialidad o necesitas saber el precio de otra?";
-            setLastBotQuestion("agendar_cita_especialidad");
-            setLastSpecialtyMentioned(bestMatch.key); // Guarda la especialidad detectada (ej. "dermatologo")
-            setContextoConversacion("precios_especialidad_seguimiento");
-            agregarMensaje("bot", respuestaBot);
-            handled = true;
-            return;
-        }
 
         // --- PRIORIDAD 2: Detección de intenciones de precios generales (ej. "cuanto cuesta una consulta") ---
         // Usamos getMatchingIntents para "precios_consultas"
@@ -210,113 +196,6 @@ const Chatbot = () => {
             agregarMensaje("bot", respuestaBot);
             handled = true;
             return;
-        }
-
-        // --- PRIORIDAD 3: Manejo de CONTEXTOS de conversación ---
-
-        // CONTEXTO: Después de preguntar por precios generales ("pregunta_precio_seguimiento")
-        // El bot preguntó: "¿Te gustaría saber el precio de alguna especialidad en particular o agendar una cita?"
-        if (contextoConversacion === "precios" && lastBotQuestion === "pregunta_precio_seguimiento" && !handled) {
-            // Opción A: El usuario ahora especifica una especialidad (ej. "dermatólogo")
-            const specialtyInQueryMatches = getMatchingIntents(textoNormalizado, respuestasData.precios_consultas_especificos);
-            if (specialtyInQueryMatches.length > 0) {
-                const bestMatch = specialtyInQueryMatches[0];
-                respuestaBot = bestMatch.entry.respuestas[Math.floor(Math.random() * bestMatch.entry.respuestas.length)];
-                respuestaBot += " ¿Te gustaría agendar una cita con esta especialidad o necesitas saber el precio de otra?";
-                setLastBotQuestion("agendar_cita_especialidad");
-                setLastSpecialtyMentioned(bestMatch.key);
-                setContextoConversacion("precios_especialidad_seguimiento");
-                agregarMensaje("bot", respuestaBot);
-                handled = true;
-                return;
-            }
-
-            // Opción B: El usuario explícitamente pide "precio por especialidad" sin decir cuál
-            const pedirPrecioEspecialidadKeywords = ["precio por especialidad", "precio de especialidad", "cuanto por especialidad", "valor por especialidad", "precios por especialista", "especialidad en particular", "cualquier especialidad", "especificos", "costos especialistas"];
-            if (pedirPrecioEspecialidadKeywords.some(keyword => textoNormalizado.includes(keyword))) {
-                respuestaBot = "Claro, ¿qué especialidad te interesa para conocer su precio de consulta? Por ejemplo, 'dermatología' o 'cardiología'.";
-                setContextoConversacion("precios_especialidad"); // Cambiamos de contexto para esperar el nombre de la especialidad
-                setLastBotQuestion(null); // Reseteamos la última pregunta ya que estamos pidiendo una nueva info
-                agregarMensaje("bot", respuestaBot);
-                handled = true;
-                return;
-            }
-
-            // Opción C: El usuario dice 'sí' o quiere agendar
-            if (yesKeywords.some(keyword => textoNormalizado.includes(keyword)) || textoNormalizado.includes("agendar")) {
-                const agendarCitaResponse = respuestasData.preguntas_generales.agendar_cita.respuestas[0];
-                respuestaBot = agendarCitaResponse;
-                setContextoConversacion("agendar_cita_opciones");
-                setLastBotQuestion("agendar_cita_opciones_pref");
-                agregarMensaje("bot", respuestaBot);
-                handled = true;
-                return;
-            }
-            // Opción D: Si el usuario dice 'no' o quiere terminar la conversación de precios
-            else if (noKeywords.some(keyword => textoNormalizado.includes(keyword))) {
-                respuestaBot = "De acuerdo. ¿Hay algo más en lo que pueda ayudarte o quieres volver al menú?";
-                setContextoConversacion(null);
-                setLastBotQuestion("pregunta_general_ayuda");
-                agregarMensaje("bot", respuestaBot);
-                handled = true;
-                return;
-            }
-        }
-
-        // CONTEXTO: Cuando el bot ya preguntó por una especialidad específica de precio ("precios_especialidad")
-        // El bot preguntó: "¿qué especialidad te interesa para conocer su precio de consulta?"
-        if (contextoConversacion === "precios_especialidad" && !handled) {
-            const matches = getMatchingIntents(textoNormalizado, respuestasData.precios_consultas_especificos);
-            if (matches.length > 0) {
-                const bestMatch = matches[0];
-                respuestaBot = bestMatch.entry.respuestas[Math.floor(Math.random() * bestMatch.entry.respuestas.length)];
-                respuestaBot += " ¿Te gustaría agendar una cita con esta especialidad o necesitas saber el precio de otra?";
-                setLastBotQuestion("agendar_cita_especialidad");
-                setLastSpecialtyMentioned(bestMatch.key);
-                setContextoConversacion("precios_especialidad_seguimiento");
-                agregarMensaje("bot", respuestaBot);
-                handled = true;
-                return;
-            } else {
-                respuestaBot = "No tengo el precio específico para esa especialidad en este momento. Sigo en el tema de precios de especialidades. ¿Hay alguna otra que te interese o quieres volver al menú?";
-                setLastBotQuestion(null); // Seguimos pidiendo una especialidad
-                agregarMensaje("bot", respuestaBot);
-                handled = true;
-                return;
-            }
-        }
-
-        // CONTEXTO: Después de dar el precio de una especialidad ("precios_especialidad_seguimiento")
-        // El bot preguntó: "¿Te gustaría agendar una cita con esta especialidad o necesitas saber el precio de otra?"
-        if (contextoConversacion === "precios_especialidad_seguimiento" && !handled) {
-            // Opción A: El usuario quiere agendar
-            if (yesKeywords.some(keyword => textoNormalizado.includes(keyword)) || textoNormalizado.includes("agendar")) {
-                const esp = lastSpecialtyMentioned ? `un **${lastSpecialtyMentioned.replace(/_/g, ' ')}**` : "un especialista";
-                respuestaBot = `¡Perfecto! Para agendar tu cita con ${esp}, puedes hacerlo de estas tres maneras: 1) Llamando al **2234-5678**, 2) En nuestra web **www.clinicaprueba.com**, o 3) Presencialmente. ¿Cuál de estas opciones prefieres?`;
-                setContextoConversacion("agendar_cita_opciones");
-                setLastBotQuestion("agendar_cita_opciones_pref");
-                agregarMensaje("bot", respuestaBot);
-                handled = true;
-                return;
-            }
-            // Opción B: El usuario quiere el precio de "otra especialidad"
-            else if (textoNormalizado.includes("otra especialidad") || textoNormalizado.includes("otro precio") || textoNormalizado.includes("otra")) {
-                respuestaBot = "Claro, ¿qué otra especialidad te interesa para conocer su precio de consulta?";
-                setContextoConversacion("precios_especialidad"); // Volvemos al contexto de pedir especialidad
-                setLastBotQuestion(null);
-                agregarMensaje("bot", respuestaBot);
-                handled = true;
-                return;
-            }
-            // Opción C: El usuario dice 'no' o termina la conversación de precios
-            else if (noKeywords.some(keyword => textoNormalizado.includes(keyword))) {
-                respuestaBot = "De acuerdo. ¿Hay algo más en lo que pueda ayudarte o quieres volver al menú?";
-                setContextoConversacion(null);
-                setLastBotQuestion("pregunta_general_ayuda");
-                agregarMensaje("bot", respuestaBot);
-                handled = true;
-                return;
-            }
         }
 
         // --- PRIORIDAD 4: Detección de otras preguntas generales (si no se ha manejado antes) ---
