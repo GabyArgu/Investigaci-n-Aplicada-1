@@ -1,18 +1,16 @@
 import React, { useEffect } from "react";
 import Chatbot from "./components/Chatbot";
 
-// Importa tus imágenes de personajes del lado izquierdo
+
 import charLeft1 from './assets/personaje.png';
 import charLeft2 from './assets/personaje1.png';
 import charLeft3 from './assets/personaje2.png';
 
-// Importa tus imágenes de personajes del lado derecho
 import charRight1 from './assets/personaje1.png';
 import charRight2 from './assets/personaje.png';
 import charRight3 from './assets/personaje4.png';
 
-// *** NUEVO: Importa la imagen de tu burbuja aquí ***
-import bubbleImage from './assets/burbuja.png'; // Asegúrate de que esta ruta sea correcta
+import bubbleImage from './assets/burbuja.png'; 
 
 function App() {
   const leftCharacterImages = [
@@ -27,9 +25,8 @@ function App() {
     charRight3
   ];
 
-  // Lista de emojis normales (Unicode)
   const unicodeEmojis = [
-    '😀', '👍', '💡', '🚀', '🌟', '😊', '🎉', '💖', '🤩', '🥳', '✨'
+    '😀', '👍', '💡', '🚀', '🌟', '😊', '🎉', '💖', '🤩', '🥳', '✨', '🩺', '😷'
   ];
 
   useEffect(() => {
