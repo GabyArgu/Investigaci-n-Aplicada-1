@@ -8,12 +8,25 @@
         ]
     },
     "menu": {
+        "preguntas": [
+            "menu",
+            "opciones",
+            "ayuda",
+            "que puedes hacer",
+            "que haces",
+            "ayudame",
+            "lista de opciones",
+            "volver al menu",
+            "categorias",
+            "temas"
+        ],
         "respuestas": [
             "¡Claro! Aquí tienes las opciones en las que puedo ayudarte:\n\n1. **Síntomas generales y orientación médica** (ej. 'me duele la cabeza', 'fiebre')\n2. **Especialidades médicas** (ej. 'dermatólogo', 'cardiólogo')\n3. **Servicios y atención en la clínica** (ej. 'horarios', 'cómo agendar una cita')\n4. **Prevención, bienestar y salud mental** (ej. 'nutrición', 'manejo del estrés')\n5. **Información administrativa** (ej. 'seguros', 'documentos necesarios')",
             "Estas son las áreas en las que puedo asistirte:\n\n* **Síntomas**\n* **Especialidades**\n* **Servicios de la clínica**\n* **Prevención y bienestar**\n* **Información administrativa**\n\n¿Cuál te interesa?",
             "Para ayudarte mejor, elige una de estas categorías o hazme una pregunta directa:\n1. Síntomas\n2. Especialidades\n3. Servicios de la Clínica\n4. Prevención\n5. Info Administrativa",
             "Mis funciones principales son:\n- Orientación sobre síntomas\n- Información de especialidades\n- Detalles sobre la clínica (horarios, citas)\n- Consejos de bienestar\n- Dudas administrativas\n¿Qué quieres explorar?"
-        ]
+        ],
+        "next_context": "menu_principal_esperando_opcion"
     },
     "sintomas_orientacion": {
         "me_siento_mal": {
@@ -187,6 +200,30 @@
                 "Las **erupciones cutáneas** pueden ser por alergias, infecciones o irritaciones. Un **dermatólogo** es el especialista ideal, pero un **médico general** puede dar una primera evaluación."
             ],
             "next_context": "sintomas",
+            "specific_prompt": "¿Tienes algún **otro síntoma** que te preocupe, o quieres que te **recomiende un especialista** con lo que ya me has dicho?"
+        },
+        "dolor_articulaciones": {
+            "preguntas": [
+                "dolor de articulaciones",
+                "me duelen las coyunturas",
+                "artritis",
+                "inflamacion articulaciones"
+            ],
+            "respuestas": [
+                "El dolor articular es un síntoma que puede ser evaluado por un **reumatólogo** o un **ortopeda**, dependiendo de la causa. Un **médico general** puede darte una primera orientación."
+            ],
+            "specific_prompt": "¿Tienes algún **otro síntoma** que te preocupe, o quieres que te **recomiende un especialista** con lo que ya me has dicho?"
+        },
+        "cambios_animo": {
+            "preguntas": [
+                "cambios de animo",
+                "me siento triste",
+                "depresion",
+                "ansiedad"
+            ],
+            "respuestas": [
+                "Los cambios de ánimo persistentes o sentimientos de tristeza/ansiedad pueden beneficiarse de la ayuda de un **psicólogo** o **psiquiatra**. Si es algo reciente o leve, un **médico general** puede orientarte."
+            ],
             "specific_prompt": "¿Tienes algún **otro síntoma** que te preocupe, o quieres que te **recomiende un especialista** con lo que ya me has dicho?"
         }
     },
@@ -413,6 +450,18 @@
             "detalles_adicionales": "Los psiquiatras evalúan y tratan condiciones como esquizofrenia, trastorno bipolar, depresión severa y trastornos de ansiedad con un enfoque médico. Pueden combinar terapia con medicamentos y trabajan en conjunto con psicólogos.",
             "next_context": null,
             "specific_prompt": "¿Necesitas más detalles sobre esta especialidad, o quieres saber sobre **agendar una cita** con ella?"
+        },
+        "ginecólogo": {
+            "preguntas": [
+                "ginecologo",
+                "salud femenina",
+                "embarazo",
+                "revision mujer"
+            ],
+            "respuestas": [
+                "Un **ginecólogo** se especializa en la salud reproductiva de la mujer, incluyendo el embarazo, parto, y enfermedades del sistema reproductor femenino. También ofrecen servicios de planificación familiar y prevención."
+            ],
+            "specific_prompt": "¿Necesitas más detalles sobre el ginecólogo, o quieres saber sobre **agendar una cita** con él?"
         }
     },
     "preguntas_generales": {
@@ -428,7 +477,7 @@
                 "necesito una cita"
             ],
             "respuestas": [
-                "Para agendar tu cita, puedes hacerlo de estas tres maneras: 1) Llamando al **2234-5678**, 2) En nuestra web **www.clinicaprueba.com**, o 3) Presencialmente."
+                "Para agendar tu cita, puedes hacerlo de estas tres maneras: 1) Llamando al **2234-5678**, 2) En nuestra web **www.UDB_Salud.com**, o 3) Presencialmente."
             ],
             "next_context": "agendar_cita_opciones",
             "specific_prompt": "¿Cuál de estas opciones prefieres?"
@@ -454,6 +503,20 @@
             ],
             "next_context": null,
             "specific_prompt": "¿Hay algo más en lo que pueda ayudarte sobre la clínica?"
+        },
+        "precios_consultas": {
+            "preguntas": [
+                "precios de consultas",
+                "cuanto cuesta la consulta",
+                "costo de citas",
+                "cuanto vale la consulta",
+                "cuanto cuesta una cita",
+                "precio consulta"
+            ],
+            "respuestas": [
+                "Las consultas con **médico general** tienen un costo de **$30.00 USD**. Para **especialistas**, el costo varía entre **$50.00 y $75.00 USD**, dependiendo de la especialidad. Puedes contactarnos para precios específicos de cada especialista."
+            ],
+            "specific_prompt": "¿Te gustaría saber cómo agendar una cita o si aceptamos tu seguro médico?"
         },
         "contacto": {
             "preguntas": [
@@ -575,6 +638,118 @@
             "next_context": null
         }
     },
+    "precios_consultas_especificos": {
+        "general": {
+            "preguntas": [
+                "precio consulta general",
+                "cuanto cuesta la consulta general",
+                "valor medico general"
+            ],
+            "respuestas": [
+                "El precio de una consulta general es de **$30.00 USD**."
+            ]
+        },
+        "dermatologo": {
+            "preguntas": [
+                "precio consulta dermatologo",
+                "cuanto cuesta ir al dermatologo",
+                "valor consulta piel"
+            ],
+            "respuestas": [
+                "La consulta con el **Dermatólogo** tiene un costo de **$45.00 USD**."
+            ]
+        },
+        "cardiologo": {
+            "preguntas": [
+                "precio consulta cardiologo",
+                "cuanto cuesta ver al cardiologo",
+                "valor consulta corazon"
+            ],
+            "respuestas": [
+                "El precio de la consulta con el **Cardiólogo** es de **$50.00 USD**."
+            ]
+        },
+        "pediatra": {
+            "preguntas": [
+                "precio consulta pediatra",
+                "cuanto cuesta el pediatra",
+                "valor consulta ninos"
+            ],
+            "respuestas": [
+                "Una consulta con el **Pediatra** cuesta **$40.00 USD**."
+            ]
+        },
+        "gastroenterologo": {
+            "preguntas": [
+                "precio consulta gastroenterologo",
+                "cuanto cuesta el gastroenterologo",
+                "valor consulta estomago"
+            ],
+            "respuestas": [
+                "La consulta con el **Gastroenterólogo** tiene un precio de **$48.00 USD**."
+            ]
+        },
+        "neurólogo": {
+            "preguntas": [
+                "precio consulta neurologo",
+                "cuanto cuesta el neurologo",
+                "valor consulta cerebro"
+            ],
+            "respuestas": [
+                "El costo de la consulta con el **Neurólogo** es de **$55.00 USD**."
+            ]
+        },
+        "oftalmologo": {
+            "preguntas": [
+                "precio consulta oftalmologo",
+                "cuanto cuesta el oftalmologo",
+                "valor consulta ojos"
+            ],
+            "respuestas": [
+                "Una consulta con el **Oftalmólogo** es de **$42.00 USD**."
+            ]
+        },
+        "otorrinolaringologo": {
+            "preguntas": [
+                "precio consulta otorrinolaringologo",
+                "cuanto cuesta el otorrino",
+                "valor consulta oidos nariz garganta"
+            ],
+            "respuestas": [
+                "La consulta con el **Otorrinolaringólogo** cuesta **$47.00 USD**."
+            ]
+        },
+        "reumatologo": {
+            "preguntas": [
+                "precio consulta reumatologo",
+                "cuanto cuesta el reumatologo",
+                "valor consulta articulaciones"
+            ],
+            "respuestas": [
+                "El precio de la consulta con el **Reumatólogo** es de **$52.00 USD**."
+            ]
+        },
+        "ginecologo": {
+            "preguntas": [
+                "precio consulta ginecologo",
+                "cuanto cuesta el ginecologo",
+                "valor consulta mujer"
+            ],
+            "respuestas": [
+                "Una consulta con el **Ginecólogo** tiene un costo de **$50.00 USD**."
+            ]
+        },
+        "psicologo": {
+            "preguntas": [
+                "precio consulta psicologo",
+                "cuanto cuesta el psicologo",
+                "valor consulta salud mental"
+            ],
+            "respuestas": [
+                "La consulta con el **Psicólogo** tiene un costo de **$60.00 USD**."
+            ]
+        }
+    },
     "prevencion_bienestar": {
         "nutricionista": {
             "preguntas": [
@@ -614,6 +789,17 @@
                 "Los chequeos preventivos regulares son esenciales para detectar problemas de salud a tiempo. Te ayudamos a programar exámenes de rutina y screenings según tu edad y factores de riesgo. ¿Necesitas información sobre qué chequeos son recomendables para ti?"
             ],
             "next_context": null
+        },
+        "salud_mental_general": {
+            "preguntas": [
+                "salud mental",
+                "bienestar emocional",
+                "apoyo psicologico"
+            ],
+            "respuestas": [
+                "La salud mental es tan importante como la física. Contamos con **psicólogos** y **psiquiatras** que ofrecen terapia y apoyo para diversas situaciones como ansiedad, depresión, duelo, entre otros. No dudes en buscar ayuda si lo necesitas."
+            ],
+            "specific_prompt": "¿Te gustaría agendar una consulta con un especialista en salud mental o saber más sobre los servicios que ofrecemos?"
         },
         "vacunas": {
             "preguntas": [
@@ -703,6 +889,7 @@
         "chiste_medico": {
             "preguntas": [
                 "hazme un chiste",
+                "chiste",
                 "cuentame un chiste",
                 "bromea",
                 "hazme reir",
