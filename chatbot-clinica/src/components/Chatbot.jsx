@@ -717,36 +717,48 @@ const Chatbot = () => {
         }
 
 
-        if (!handled && contextoConversacion === "servicios_clinica") {
-            const matches = getMatchingIntents(textoNormalizado, respuestasData.preguntas_generales);
-            if (matches.length > 0) {
-                const bestMatch = matches[0];
-                respuestaBot = bestMatch.entry.respuestas[Math.floor(Math.random() * bestMatch.entry.respuestas.length)];
+        // --- Prioridad dentro del contexto "servicios_clinica" ---
+        if (contextoConversacion === "servicios_clinica" && !handled) {
+            const matchedIntentInServices = getMatchingIntents(textoNormalizado, respuestasData.preguntas_generales);
+
+            if (matchedIntentInServices.length > 0) {
+                const bestMatch = matchedIntentInServices[0];
 
                 if (bestMatch.key === "agendar_cita") {
-                    respuestaBot += " " + (bestMatch.entry.specific_prompt || "¿Cuál de estas opciones prefieres?");
-                    setContextoConversacion("agendar_cita_opciones");
-                    setLastBotQuestion("agendar_cita_opciones_pref");
-                    setSintomasAcumulados([]);
-                    setLastSpecialtyMentioned(null);
+            respuestaBot = bestMatch.entry.respuestas[Math.floor(Math.random() * bestMatch.entry.respuestas.length)];
+            respuestaBot += " " + (bestMatch.entry.specific_prompt || "¿Cuál de estas opciones prefieres?");
+            setContextoConversacion("agendar_cita_opciones");
+            setLastBotQuestion("agendar_cita_opciones_pref");
+            setSintomasAcumulados([]);
+            setLastSpecialtyMentioned(null);
+        } else if (bestMatch.key === "precios_consultas") {
+                    respuestaBot = bestMatch.entry.respuestas[Math.floor(Math.random() * bestMatch.entry.respuestas.length)];
+                    respuestaBot += " ¿Te gustaría saber el precio de alguna especialidad en particular o agendar una cita?";
+                    setLastBotQuestion("pregunta_precio_seguimiento");
+                    setContextoConversacion("precios"); // **Crucial: Cambia el contexto a 'precios'**
                 } else {
+                    // Para otras preguntas generales como 'horarios', 'urgencias', 'contacto' etc.
+                    respuestaBot = bestMatch.entry.respuestas[Math.floor(Math.random() * bestMatch.entry.respuestas.length)];
                     if (bestMatch.entry.specific_prompt) {
                         respuestaBot += " " + bestMatch.entry.specific_prompt;
                     }
-                    setContextoConversacion(bestMatch.entry.next_context);
+                    setContextoConversacion(bestMatch.entry.next_context || null); // Usa el next_context del intent
                     setLastBotQuestion("pregunta_general_ayuda");
                     setLastSpecialtyMentioned(null);
                 }
+                agregarMensaje("bot", respuestaBot);
+                handled = true;
+                return; // ¡IMPORTANTE! Salir de la función aquí para evitar que se ejecute la parte 'else' de este bloque.
             } else {
+                // Si no se encontró ningún intent general dentro de este contexto "servicios_clinica"
                 respuestaBot = "Sigo en el tema de **Servicios y atención en la clínica**. ¿Qué te gustaría saber? ¿Nuestros 'horarios', 'cómo agendar una cita', 'precios de consultas' o si 'atienden urgencias'? Para volver al menú principal, escribe 'menú'.";
-                nuevoContexto = "servicios_clinica";
+                setContextoConversacion("servicios_clinica"); // Mantener el contexto si no se entendió
                 setLastBotQuestion(null);
                 setLastSpecialtyMentioned(null);
+                agregarMensaje("bot", respuestaBot);
+                handled = true;
+                return; // Salir de la función
             }
-            agregarMensaje("bot", respuestaBot);
-            setContextoConversacion(nuevoContexto);
-            handled = true;
-            return;
         }
 
         if (!handled && contextoConversacion === "prevencion_bienestar") {
@@ -761,9 +773,9 @@ const Chatbot = () => {
                     setLastBotQuestion(`agendar_desde_pb_${bestMatch.key}`);
                     setLastSpecialtyMentioned(bestMatch.key);
                 }
-                else if (!nuevoContexto) {
+                else if (!nuevoContexto) { 
                     respuestaBot += " " + (bestMatch.entry.specific_prompt || "¿Necesitas más información sobre bienestar o quieres **agendar una consulta** con un especialista?");
-                    setLastBotQuestion("pregunta_general_ayuda");
+                    setLastBotQuestion("pregunta_general_ayuda"); 
                     nuevoContexto = "prevencion_bienestar";
                     setLastSpecialtyMentioned(null);
                 }
