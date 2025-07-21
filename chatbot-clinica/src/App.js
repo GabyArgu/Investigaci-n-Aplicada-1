@@ -30,8 +30,6 @@ function App() {
   ];
 
   useEffect(() => {
-    console.log("App.js - useEffect se está ejecutando para configurar personajes y burbujas.");
-
     const getRandomImage = (imageList) => {
       if (imageList.length === 0) {
         return null;
@@ -81,7 +79,6 @@ function App() {
         charImg.style.height = '100%';
         charImg.style.objectFit = 'contain';
         leftCharContainer.appendChild(charImg);
-        console.log("Mostrando imagen en el lado izquierdo:", selectedLeftImage);
 
         const randomEmoji = getRandomEmoji(unicodeEmojis);
         if (randomEmoji) {
@@ -118,7 +115,6 @@ function App() {
         charImg.style.height = '100%';
         charImg.style.objectFit = 'contain';
         rightCharContainer.appendChild(charImg);
-        console.log("Mostrando imagen en el lado derecho:", selectedRightImage);
 
         const randomEmoji = getRandomEmoji(unicodeEmojis);
         if (randomEmoji) {

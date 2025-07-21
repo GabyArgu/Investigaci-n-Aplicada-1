@@ -1,34 +1,112 @@
 {
-    "bienvenida": {
-        "respuestas": [
-            "¡Hola! Soy Medibot 🤖, tu asistente de salud en línea. ¿En qué puedo ayudarte hoy? Puedes escribir 'menú' para ver mis opciones.",
-            "¡Bienvenido/a! Soy el chatbot de la clínica. Dime, ¿qué necesitas saber o qué te preocupa? Puedes escribir 'menú' para ver las opciones.",
-            "Saludos, soy Medibot. Estoy aquí para asistirte con tus dudas de salud. ¿Cómo puedo ayudarte hoy?",
-            "¡Hola! Estoy listo para ayudarte con información de salud. ¿Qué necesitas?"
-        ]
+    "general": {
+        "bienvenida": {
+            "preguntas": [
+                "hola",
+                "buenas",
+                "buenos dias",
+                "buen dia",
+                "hey",
+                "saludos",
+                "que tal",
+                "hola bot",
+                "hola medico",
+                "hola asistente",
+                "holi",
+                "bienvenido",
+                "bienvenida"
+            ],
+            "respuestas": [
+                "¡Hola! Soy Medibot 🤖, tu asistente de salud en línea. ¿En qué puedo ayudarte hoy? Puedes escribir 'menú' para ver mis opciones.",
+                "¡Bienvenido/a! Soy el chatbot de la clínica. Dime, ¿qué necesitas saber o qué te preocupa? Puedes escribir 'menú' para ver las opciones.",
+                "Saludos, soy Medibot. Estoy aquí para asistirte con tus dudas de salud. ¿Cómo puedo ayudarte hoy?",
+                "¡Hola! Estoy listo para ayudarte con información de salud. ¿Qué necesitas?"
+            ]
+        },
+        "nombre_bot": {
+            "preguntas": [
+                "como te llamas",
+                "cual es tu nombre",
+                "eres medibot",
+                "tu nombre"
+            ],
+            "respuestas": [
+                "Soy Medibot 🤖, tu asistente de salud en línea.",
+                "Mi nombre es Medibot.",
+                "Puedes llamarme Medibot."
+            ],
+            "next_context": null
+        },
+        "edad_bot": {
+            "preguntas": [
+                "tu edad",
+                "cuantos años tienes",
+                "que edad tienes"
+            ],
+            "respuestas": [
+                "Soy un programa de computadora, no tengo edad.",
+                "No tengo edad, ¡solo bits y bytes!",
+                "Soy un asistente virtual, no envejezco."
+            ],
+            "next_context": null
+        },
+        "despedida": {
+            "preguntas": [
+                "adios",
+                "hasta luego",
+                "bye",
+                "chao",
+                "que te vaya bien",
+                "ya me voy",
+                "nada mas",
+                "nos vemos",
+                "me voy"
+            ],
+            "respuestas": [
+                "¡Hasta pronto! Que tengas un excelente día.",
+                "Adiós, fue un gusto ayudarte. ¡Que te mejores!",
+                "Cuídate mucho. Si necesitas algo, no dudes en volver.",
+                "Gracias por tu visita, ¡que estés muy bien!",
+                "¡Hasta luego! Que tengas un excelente día. Recuerda que estoy aquí si me necesitas.",
+                "Adiós. Cuídate mucho. ¡Espero verte pronto!",
+                "Que te vaya bien. ¡No dudes en volver si tienes más preguntas!"
+            ],
+            "next_context": null
+        },
+        "como_estas": {
+            "preguntas": [
+                "como estas",
+                "que tal estas"
+            ],
+            "respuestas": [
+                "Estoy funcionando perfectamente, ¡listo para ayudarte!",
+                "Muy bien, gracias. ¿Y tú?",
+                "Siempre listo para asistir en lo que necesites."
+            ],
+            "next_context": null
+        }
     },
-    "menu": {
-        "preguntas": [
-            "menu",
-            "opciones",
-            "ayuda",
-            "que puedes hacer",
-            "que haces",
-            "ayudame",
-            "lista de opciones",
-            "volver al menu",
-            "categorias",
-            "temas"
-        ],
-        "respuestas": [
-            "¡Claro! Aquí tienes las opciones en las que puedo ayudarte:\n\n1. **Síntomas generales y orientación médica** (ej. 'me duele la cabeza', 'fiebre')\n2. **Especialidades médicas** (ej. 'dermatólogo', 'cardiólogo')\n3. **Servicios y atención en la clínica** (ej. 'horarios', 'cómo agendar una cita')\n4. **Prevención, bienestar y salud mental** (ej. 'nutrición', 'manejo del estrés')\n5. **Información administrativa** (ej. 'seguros', 'documentos necesarios')",
-            "Estas son las áreas en las que puedo asistirte:\n\n* **Síntomas**\n* **Especialidades**\n* **Servicios de la clínica**\n* **Prevención y bienestar**\n* **Información administrativa**\n\n¿Cuál te interesa?",
-            "Para ayudarte mejor, elige una de estas categorías o hazme una pregunta directa:\n1. Síntomas\n2. Especialidades\n3. Servicios de la Clínica\n4. Prevención\n5. Info Administrativa",
-            "Mis funciones principales son:\n- Orientación sobre síntomas\n- Información de especialidades\n- Detalles sobre la clínica (horarios, citas)\n- Consejos de bienestar\n- Dudas administrativas\n¿Qué quieres explorar?"
-        ],
-        "next_context": "menu_principal_esperando_opcion"
-    },
-    "sintomas_orientacion": {
+    "preguntas_generales": {
+        "menu": {
+            "preguntas": [
+                "menu",
+                "opciones",
+                "ayuda",
+                "que puedes hacer",
+                "que haces",
+                "ayudame",
+                "lista de opciones",
+                "volver al menu",
+                "categorias"
+            ],
+            "respuestas": [
+                "¡Claro! Aquí tienes las opciones en las que puedo ayudarte:\n\n1. **Síntomas generales y orientación médica** (ej. 'me duele la cabeza', 'fiebre')\n2. **Especialidades médicas** (ej. 'dermatólogo', 'cardiólogo')\n3. **Servicios y atención en la clínica** (ej. 'horarios', 'cómo agendar una cita')\n4. **Prevención, bienestar y salud mental** (ej. 'nutrición', 'manejo del estrés')\n5. **Información administrativa** (ej. 'seguros', 'documentos necesarios')",
+                "Estas son las áreas en las que puedo asistirte:\n\n* **Síntomas**\n* **Especialidades**\n* **Servicios de la clínica**\n* **Prevención y bienestar**\n* **Información administrativa**\n\n¿Cuál te interesa?",
+                "Para ayudarte mejor, elige una de estas categorías o hazme una pregunta directa:\n1. Síntomas\n2. Especialidades\n3. Servicios de la Clínica\n4. Prevención\n5. Info Administrativa",
+                "Mis funciones principales son:\n- Orientación sobre síntomas\n- Información de especialidades\n- Detalles sobre la clínica (horarios, citas)\n- Consejos de bienestar\n- Dudas administrativas\n¿Qué quieres explorar?"
+            ],
+            "next_context": "menu_principal_esperando_opcion"
+        },
         "me_siento_mal": {
             "preguntas": [
                 "me siento mal",
@@ -44,6 +122,185 @@
             ],
             "next_context": "sintomas"
         },
+        "agendar_cita": {
+            "preguntas": [
+                "agendar cita",
+                "como agendo una cita",
+                "quiero una cita",
+                "reservar cita",
+                "cita medica",
+                "citas",
+                "pedir cita",
+                "necesito una cita"
+            ],
+            "respuestas": [
+                "Para agendar tu cita, puedes hacerlo de estas tres maneras: 1) Llamando al **2234-5678**, 2) En nuestra web **www.UDB_Salud.com**, o 3) Presencialmente."
+            ],
+            "next_context": "agendar_cita_opciones",
+            "specific_prompt": "¿Cuál de estas opciones prefieres?"
+        },
+        "horarios": {
+            "preguntas": [
+                "horarios",
+                "a que hora abren",
+                "cuando abren",
+                "cuando cierran",
+                "horario de atencion",
+                "horario clinica",
+                "sus horarios",
+                "que horarios tienen",
+                "horas de apertura",
+                "horas de cierre",
+                "atienden fines de semana"
+            ],
+            "respuestas": [
+                "Nuestros horarios de atención son de Lunes a Viernes de **8:00 AM a 5:00 PM** y Sábados de **8:00 AM a 12:00 PM**. Los domingos estamos cerrados.",
+                "Puedes visitarnos de lunes a viernes, de 8 de la mañana a 5 de la tarde. Los sábados abrimos hasta el mediodía (12:00 PM). Los domingos descansamos.",
+                "La clínica está abierta de 8:00 AM a 5:00 PM de lunes a viernes, y los sábados de 8:00 AM a 12:00 PM."
+            ],
+            "next_context": null,
+            "specific_prompt": "¿Hay algo más en lo que pueda ayudarte sobre la clínica?"
+        },
+        "precios_consultas": {
+            "preguntas": [
+                "precios de consultas",
+                "cuanto cuesta la consulta",
+                "costo de citas",
+                "cuanto vale la consulta",
+                "cuanto cuesta una cita",
+                "precio consulta"
+            ],
+            "respuestas": [
+                "Las consultas con **médico general** tienen un costo de **$30.00 USD**. Para **especialistas**, el costo varía entre **$50.00 y $75.00 USD**, dependiendo de la especialidad. Puedes contactarnos para precios específicos de cada especialista."
+            ],
+            "specific_prompt": "¿Te gustaría saber cómo agendar una cita o si aceptamos tu seguro médico?"
+        },
+        "contacto": {
+            "preguntas": [
+                "contacto",
+                "numero de telefono",
+                "telefono",
+                "donde estan ubicados",
+                "direccion",
+                "email",
+                "como contactar",
+                "redes sociales"
+            ],
+            "respuestas": [
+                "Puedes contactarnos llamando al **2234-5678**, visitando nuestra clínica en **Calle Principal #123, Colonia San Benito, San Salvador**, o enviándonos un correo a **info@UDB_Clinica.com**. También estamos en Facebook e Instagram como @UDB_Clinica."
+            ],
+            "next_context": null,
+            "specific_prompt": "¿Necesitas algún dato de contacto específico?"
+        },
+        "urgencias": {
+            "preguntas": [
+                "urgencias",
+                "atienden emergencias",
+                "es una emergencia",
+                "tienen emergencias",
+                "emergencia medica",
+                "situacion de emergencia"
+            ],
+            "respuestas": [
+                "Sí, atendemos urgencias. Si es una emergencia vital (que pone en riesgo la vida), por favor llama al **911** inmediatamente. Para urgencias que no ponen en riesgo la vida, puedes venir directamente a nuestra clínica."
+            ],
+            "next_context": null,
+            "specific_prompt": "¿Necesitas saber algo más sobre urgencias?"
+        },
+        "seguros_medicos": {
+            "preguntas": [
+                "aceptan seguros",
+                "seguros medicos",
+                "aseguradoras",
+                "con que seguros trabajan",
+                "cubren seguros"
+            ],
+            "respuestas": [
+                "Sí, trabajamos con varias aseguradoras. ¿Podrías decirme el nombre de tu aseguradora para verificar si tenemos convenio? Si no estás seguro, puedes llamar a nuestra recepción."
+            ],
+            "next_context": "seguro_especifico"
+        },
+        "documentos_nuevos_pacientes": {
+            "preguntas": [
+                "documentos para paciente nuevo",
+                "que necesito para registrarme",
+                "requisitos para ser paciente",
+                "como me registro",
+                "primeracita documentos"
+            ],
+            "respuestas": [
+                "Para registrarte como paciente nuevo, generalmente necesitarás tu **Documento Único de Identidad (DUI)** o pasaporte, y tu **carné de seguro médico** si aplica. Te recomendamos llegar unos minutos antes de tu cita."
+            ],
+            "next_context": null,
+            "specific_prompt": "¿Hay algo más sobre el registro que quieras saber?"
+        },
+        "historial_medico": {
+            "preguntas": [
+                "historial medico",
+                "como consigo mi historial",
+                "mi expediente clinico",
+                "copia de mi historial",
+                "expediente medico"
+            ],
+            "respuestas": [
+                "Para solicitar una copia de tu historial médico, por favor acércate a nuestra recepción con tu DUI. Te indicarán el proceso y los tiempos de entrega, según las regulaciones de privacidad."
+            ],
+            "next_context": null,
+            "specific_prompt": "¿Necesitas saber algo más sobre tu historial?"
+        },
+        "formas_pago": {
+            "preguntas": [
+                "formas de pago",
+                "como puedo pagar",
+                "metodos de pago",
+                "aceptan tarjeta",
+                "pago con tarjeta",
+                "efectivo"
+            ],
+            "respuestas": [
+                "Aceptamos pagos en efectivo, tarjetas de crédito y débito (Visa, Mastercard, American Express) y transferencias bancarias. Puedes consultar en recepción si tienes dudas sobre un método específico."
+            ],
+            "next_context": null,
+            "specific_prompt": "¿Hay alguna otra pregunta sobre pagos?"
+        },
+        "agradecimiento": {
+            "preguntas": [
+                "entendido",
+                "perfecto",
+                "de acuerdo",
+                "gracias",
+                "muchas gracias",
+                "ok",
+                "listo",
+                "okey",
+                "entendido",
+                "comprendido",
+                "claro",
+                "gracias bot",
+                "gracias medico",
+                "gracias asistente"
+            ],
+            "respuestas": [
+                "¡De nada! Estoy para servirte. ¿Hay algo más en lo que pueda ayudarte hoy?",
+                "Con gusto. Me alegra haberte ayudado. ¿Necesitas algo más?",
+                "Es un placer. ¡No dudes en preguntar si tienes más dudas!"
+            ],
+            "next_context": null,
+            "specific_prompt": " "
+        },
+        "medico_general_internista_diferencia": {
+            "preguntas": [
+                "diferencia entre internista y general",
+                "diferencia entre un médico general y un internista"
+            ],
+            "respuestas": [
+                "El médico general trata enfermedades comunes y da atención primaria a personas de todas las edades, derivando a especialistas si es necesario. El médico internista se especializa en enfermedades complejas y crónicas en adultos, generalmente trabajando en hospitales y clínicas especializadas."
+            ],
+            "next_context": null,
+            "specific_prompt": "¿Hay algo más en lo que pueda ayudarte sobre la clínica?"
+        }
+    },
+    "sintomas_orientacion": {
         "fiebre_alta": {
             "preguntas": [
                 "fiebre",
@@ -86,7 +343,7 @@
                 "tos que no se quita",
                 "toser",
                 "muchatos",
-                "tosconstante"
+                "tos constante"
             ],
             "respuestas": [
                 "La **tos persistente** puede tener muchas causas. Te recomiendo que te vea un **médico general** para que evalúe la situación. Si es necesario, te derivará a un **neumólogo** o **alergólogo**."
@@ -117,7 +374,8 @@
                 "ahogo",
                 "disnea",
                 "respiracion agitada",
-                "me ahogo"
+                "me ahogo",
+                "tengo molestias al respirar"
             ],
             "respuestas": [
                 "La **dificultad para respirar** puede ser grave. Te sugiero buscar atención de un **médico general** o un **neumólogo** de inmediato. Si es una emergencia, llama al 911."
@@ -409,20 +667,6 @@
             "next_context": null,
             "specific_prompt": "¿Necesitas más detalles sobre esta especialidad, o quieres saber sobre **agendar una cita** con ella?"
         },
-        "nutricionista": {
-            "preguntas": [
-                "nutricionista",
-                "dieta",
-                "alimentacion",
-                "peso"
-            ],
-            "respuestas": [
-                "Un nutricionista es un profesional de la salud que ayuda a las personas a mejorar su alimentación y hábitos nutricionales."
-            ],
-            "detalles_adicionales": "Los nutricionistas crean planes de alimentación personalizados para control de peso, manejo de enfermedades (diabetes, hipertensión), alergias alimentarias, o simplemente para llevar una vida más saludable. Ofrecen educación sobre alimentos y hábitos sostenibles.",
-            "next_context": null,
-            "specific_prompt": "¿Necesitas más detalles sobre esta especialidad, o quieres saber sobre **agendar una cita** con ella?"
-        },
         "psicologo": {
             "preguntas": [
                 "psicologo",
@@ -462,180 +706,6 @@
                 "Un **ginecólogo** se especializa en la salud reproductiva de la mujer, incluyendo el embarazo, parto, y enfermedades del sistema reproductor femenino. También ofrecen servicios de planificación familiar y prevención."
             ],
             "specific_prompt": "¿Necesitas más detalles sobre el ginecólogo, o quieres saber sobre **agendar una cita** con él?"
-        }
-    },
-    "preguntas_generales": {
-        "agendar_cita": {
-            "preguntas": [
-                "agendar cita",
-                "como agendo una cita",
-                "quiero una cita",
-                "reservar cita",
-                "cita medica",
-                "citas",
-                "pedir cita",
-                "necesito una cita"
-            ],
-            "respuestas": [
-                "Para agendar tu cita, puedes hacerlo de estas tres maneras: 1) Llamando al **2234-5678**, 2) En nuestra web **www.UDB_Salud.com**, o 3) Presencialmente."
-            ],
-            "next_context": "agendar_cita_opciones",
-            "specific_prompt": "¿Cuál de estas opciones prefieres?"
-        },
-        "horarios": {
-            "preguntas": [
-                "horarios",
-                "a que hora abren",
-                "cuando abren",
-                "cuando cierran",
-                "horario de atencion",
-                "horario clinica",
-                "sus horarios",
-                "que horarios tienen",
-                "horas de apertura",
-                "horas de cierre",
-                "atienden fines de semana"
-            ],
-            "respuestas": [
-                "Nuestros horarios de atención son de Lunes a Viernes de **8:00 AM a 5:00 PM** y Sábados de **8:00 AM a 12:00 PM**. Los domingos estamos cerrados.",
-                "Puedes visitarnos de lunes a viernes, de 8 de la mañana a 5 de la tarde. Los sábados abrimos hasta el mediodía (12:00 PM). Los domingos descansamos.",
-                "La clínica está abierta de 8:00 AM a 5:00 PM de lunes a viernes, y los sábados de 8:00 AM a 12:00 PM."
-            ],
-            "next_context": null,
-            "specific_prompt": "¿Hay algo más en lo que pueda ayudarte sobre la clínica?"
-        },
-        "precios_consultas": {
-            "preguntas": [
-                "precios de consultas",
-                "cuanto cuesta la consulta",
-                "costo de citas",
-                "cuanto vale la consulta",
-                "cuanto cuesta una cita",
-                "precio consulta"
-            ],
-            "respuestas": [
-                "Las consultas con **médico general** tienen un costo de **$30.00 USD**. Para **especialistas**, el costo varía entre **$50.00 y $75.00 USD**, dependiendo de la especialidad. Puedes contactarnos para precios específicos de cada especialista."
-            ],
-            "specific_prompt": "¿Te gustaría saber cómo agendar una cita o si aceptamos tu seguro médico?"
-        },
-        "contacto": {
-            "preguntas": [
-                "contacto",
-                "numero de telefono",
-                "telefono",
-                "donde estan ubicados",
-                "direccion",
-                "email",
-                "como contactar",
-                "redes sociales"
-            ],
-            "respuestas": [
-                "Puedes contactarnos llamando al **2234-5678**, visitando nuestra clínica en **Calle Principal #123, Colonia San Benito, San Salvador**, o enviándonos un correo a **info@UDB_Clinica.com**. También estamos en Facebook e Instagram como @UDB_Clinica."
-            ],
-            "next_context": null,
-            "specific_prompt": "¿Necesitas algún dato de contacto específico?"
-        },
-        "urgencias": {
-            "preguntas": [
-                "urgencias",
-                "atienden emergencias",
-                "es una emergencia",
-                "tienen emergencias",
-                "emergencia medica",
-                "situacion de emergencia"
-            ],
-            "respuestas": [
-                "Sí, atendemos urgencias. Si es una emergencia vital (que pone en riesgo la vida), por favor llama al **911** inmediatamente. Para urgencias que no ponen en riesgo la vida, puedes venir directamente a nuestra clínica."
-            ],
-            "next_context": null,
-            "specific_prompt": "¿Necesitas saber algo más sobre urgencias?"
-        },
-        "seguros_medicos": {
-            "preguntas": [
-                "aceptan seguros",
-                "seguros medicos",
-                "aseguradoras",
-                "con que seguros trabajan",
-                "cubren seguros"
-            ],
-            "respuestas": [
-                "Sí, trabajamos con varias aseguradoras. ¿Podrías decirme el nombre de tu aseguradora para verificar si tenemos convenio? Si no estás seguro, puedes llamar a nuestra recepción."
-            ],
-            "next_context": "seguro_especifico"
-        },
-        "documentos_nuevos_pacientes": {
-            "preguntas": [
-                "documentos para paciente nuevo",
-                "que necesito para registrarme",
-                "requisitos para ser paciente",
-                "como me registro",
-                "primeracita documentos"
-            ],
-            "respuestas": [
-                "Para registrarte como paciente nuevo, generalmente necesitarás tu **Documento Único de Identidad (DUI)** o pasaporte, y tu **carné de seguro médico** si aplica. Te recomendamos llegar unos minutos antes de tu cita."
-            ],
-            "next_context": null,
-            "specific_prompt": "¿Hay algo más sobre el registro que quieras saber?"
-        },
-        "historial_medico": {
-            "preguntas": [
-                "historial medico",
-                "como consigo mi historial",
-                "mi expediente clinico",
-                "copia de mi historial",
-                "expediente medico"
-            ],
-            "respuestas": [
-                "Para solicitar una copia de tu historial médico, por favor acércate a nuestra recepción con tu DUI. Te indicarán el proceso y los tiempos de entrega, según las regulaciones de privacidad."
-            ],
-            "next_context": null,
-            "specific_prompt": "¿Necesitas saber algo más sobre tu historial?"
-        },
-        "formas_pago": {
-            "preguntas": [
-                "formas de pago",
-                "como puedo pagar",
-                "metodos de pago",
-                "aceptan tarjeta",
-                "pago con tarjeta",
-                "efectivo"
-            ],
-            "respuestas": [
-                "Aceptamos pagos en efectivo, tarjetas de crédito y débito (Visa, Mastercard, American Express) y transferencias bancarias. Puedes consultar en recepción si tienes dudas sobre un método específico."
-            ],
-            "next_context": null,
-            "specific_prompt": "¿Hay alguna otra pregunta sobre pagos?"
-        },
-        "agradecimiento": {
-            "preguntas": [
-                "gracias",
-                "muchas gracias",
-                "te lo agradezco",
-                "gracias medibot",
-                "muy amable"
-            ],
-            "respuestas": [
-                "¡De nada! Estoy para servirte. ¿Hay algo más en lo que pueda ayudarte hoy?",
-                "Con gusto. Me alegra haberte ayudado. ¿Necesitas algo más?",
-                "Es un placer. ¡No dudes en preguntar si tienes más dudas!"
-            ],
-            "next_context": null
-        },
-        "despedida": {
-            "preguntas": [
-                "adios",
-                "hasta luego",
-                "nos vemos",
-                "chao",
-                "bye",
-                "me voy"
-            ],
-            "respuestas": [
-                "¡Hasta luego! Que tengas un excelente día. Recuerda que estoy aquí si me necesitas.",
-                "Adiós. Cuídate mucho. ¡Espero verte pronto!",
-                "Que te vaya bien. ¡No dudes en volver si tienes más preguntas!"
-            ],
-            "next_context": null
         }
     },
     "precios_consultas_especificos": {
@@ -783,7 +853,8 @@
             "preguntas": [
                 "chequeos preventivos",
                 "revision general",
-                "examen medico"
+                "examen medico",
+                "chequeos médicos preventivos"
             ],
             "respuestas": [
                 "Los chequeos preventivos regulares son esenciales para detectar problemas de salud a tiempo. Te ayudamos a programar exámenes de rutina y screenings según tu edad y factores de riesgo. ¿Necesitas información sobre qué chequeos son recomendables para ti?"
@@ -893,7 +964,8 @@
                 "cuentame un chiste",
                 "bromea",
                 "hazme reir",
-                "cuentame un chiste de medicos"
+                "cuentame un chiste de medicos",
+                "bromas"
             ],
             "respuestas": [
                 "¿Qué le dice un ojo al otro? Estamos conectados por la nariz. ¡Jeje!",
@@ -914,80 +986,6 @@
                 "Soy un programa de inteligencia artificial, pero estoy aquí para asistirte con toda la información que necesitas.",
                 "Mis circuitos están muy bien, gracias por preguntar. ¡Soy un bot listo para ayudarte!"
             ]
-        }
-    },
-    "general": {
-        "nombre_bot": {
-            "preguntas": [
-                "como te llamas",
-                "cual es tu nombre",
-                "eres medibot",
-                "tu nombre"
-            ],
-            "respuestas": [
-                "Soy Medibot 🤖, tu asistente de salud en línea.",
-                "Mi nombre es Medibot.",
-                "Puedes llamarme Medibot."
-            ],
-            "next_context": null
-        },
-        "edad_bot": {
-            "preguntas": [
-                "tu edad",
-                "cuantos años tienes",
-                "que edad tienes"
-            ],
-            "respuestas": [
-                "Soy un programa de computadora, no tengo edad.",
-                "No tengo edad, ¡solo bits y bytes!",
-                "Soy un asistente virtual, no envejezco."
-            ],
-            "next_context": null
-        },
-        "gracias": {
-            "preguntas": [
-                "gracias",
-                "muchas gracias",
-                "te agradezco",
-                "gracias por tu ayuda"
-            ],
-            "respuestas": [
-                "De nada, estoy para servirte.",
-                "Es un placer ayudarte.",
-                "Para eso estoy."
-            ],
-            "next_context": null
-        },
-        "despedida": {
-            "preguntas": [
-                "adios",
-                "hasta luego",
-                "bye",
-                "chao",
-                "que te vaya bien",
-                "ya me voy",
-                "no gracias",
-                "nada mas"
-            ],
-            "respuestas": [
-                "¡Hasta pronto! Que tengas un excelente día.",
-                "Adiós, fue un gusto ayudarte. ¡Que te mejores!",
-                "Cuídate mucho. Si necesitas algo, no dudes en volver.",
-                "Gracias por tu visita, ¡que estés muy bien!"
-            ],
-            "next_context": null
-        },
-        "como_estas": {
-            "preguntas": [
-                "como estas",
-                "que tal estas"
-            ],
-            "respuestas": [
-                "Estoy funcionando perfectamente, ¡listo para ayudarte!",
-                "Muy bien, gracias. ¿Y tú?",
-                "Siempre listo para asistir en lo que necesites."
-            ],
-            "next_context": null
         }
     }
 }

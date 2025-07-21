@@ -36,35 +36,16 @@ const Chatbot = () => {
         const matches = [];
         for (const sectionKey in sectionData) {
             const section = sectionData[sectionKey];
-            // Si la sección tiene 'preguntas' directamente (como general, despedida, etc.)
-            if (section && section.preguntas && Array.isArray(section.preguntas)) {
-                for (const phrase of section.preguntas) {
-                    const normalizedPhrase = normalizarTexto(phrase);
-                    // Asegúrate de que la frase coincidente sea suficientemente larga o relevante
-                    // Prioriza coincidencias completas o más largas
-                    if (textoUsuario.includes(normalizedPhrase) && normalizedPhrase.length > 3) {
-                        matches.push({
-                            key: sectionKey,
-                            entry: section,
-                            score: normalizedPhrase.length
-                        });
-                    }
-                }
-            } else { // Para secciones que contienen sub-objetos (ej. especialidades_medicas, sintomas_orientacion)
-                for (const itemKey in section) {
-                    const item = section[itemKey];
-                    if (item && item.preguntas && Array.isArray(item.preguntas)) {
-                        for (const phrase of item.preguntas) {
-                            const normalizedPhrase = normalizarTexto(phrase);
-                            if (textoUsuario.includes(normalizedPhrase) && normalizedPhrase.length > 3) {
-                                matches.push({
-                                    key: itemKey,
-                                    entry: item,
-                                    score: normalizedPhrase.length
-                                });
-                            }
-                        }
-                    }
+            for (const phrase of section.preguntas) {
+                const normalizedPhrase = normalizarTexto(phrase);
+                // Asegúrate de que la frase coincidente sea suficientemente larga o relevante
+                // Prioriza coincidencias completas o más largas
+                if (textoUsuario.includes(normalizedPhrase) && normalizedPhrase.length > 2) {
+                    matches.push({
+                        key: sectionKey,
+                        entry: section,
+                        score: normalizedPhrase.length
+                    });
                 }
             }
         }
@@ -94,7 +75,6 @@ const Chatbot = () => {
             "dermatólogo": 0,
             "pediatra": 0,
             "ginecólogo": 0,
-            "nutricionista": 0,
             "psicólogo": 0,
             "psiquiatra": 0
         };
@@ -170,198 +150,54 @@ const Chatbot = () => {
 
         const yesKeywords = ["si", "sí", "por favor", "me gustaria", "claro", "afirmativo", "definitivamente", "hazlo", "quiero", "adelante", "dame uno", "recomiendame uno", "agendala", "si agendala", "si porfavor", "si agendar", "agendar cita", "agendarla", "agendar una cita"];
         const noKeywords = ["no", "no gracias", "no quiero", "negativo", "omitir", "ahora no", "aun no", "nada mas", "es todo", "suficiente", "no es necesario", "no agendar", "no agendar cita", "no agendarla", "no agendar una cita"];
-        const acknowledgeKeywords = ["entendido", "perfecto", "de acuerdo", "gracias", "muchas gracias", "ok", "listo", "okey", "entendido", "comprendido", "claro", "gracias bot", "gracias medico", "gracias asistente"];
         const masDetallesKeywords = ["mas detalles", "dime mas", "explicame mas", "informacion adicional", "dame mas informacion", "mas info", "mas detalles porfavor", "mas detalles por favor", "mas detalles por favor bot", "mas detalles porfavor bot", "mas detalles porfavor medico", "mas detalles por favor medico", "mas detalles porfavor asistente", "mas detalles por favor asistente"];
         const sintomasKeywords = ["sintomas", "sintoma", "mis sintomas", "que me pasa", "otro sintoma", "otro sintoma porfavor", "otro sintoma por favor", "sintomas porfavor", "sintomas por favor", "sintomas bot", "sintomas medico", "sintomas asistente"];
         const especialidadesKeywords = ["especialidades", "especialidad", "tipos de medicos", "doctor", "medico", "especialista", "especialidades medicas", "especialidades medica", "especialidades medicos", "especialidades medica", "especialidades medicos", "especialidades medicas bot", "especialidades medicas medico", "especialidades medicas asistente"];
         const precioEspecificoKeywords = ["cuanto vale", "cual es el precio", "precio de", "costo de", "valor de", "cuanto cuesta"];
 
-
-
-        // --- PRIORIDAD 2: Detección de intenciones de precios generales (ej. "cuanto cuesta una consulta") ---
-        // Usamos getMatchingIntents para "precios_consultas"
-        const generalPriceMatch = getMatchingIntents(textoNormalizado, {
-            "precios_consultas": respuestasData.preguntas_generales.precios_consultas
-        });
-
-        if (generalPriceMatch.length > 0 && !handled) {
-            const bestMatch = generalPriceMatch[0];
-            respuestaBot = bestMatch.entry.respuestas[Math.floor(Math.random() * bestMatch.entry.respuestas.length)];
-            // Añadimos la pregunta de seguimiento si no viene del JSON directamente
-            if (!bestMatch.entry.specific_prompt) {
-                respuestaBot += " ¿Te gustaría saber el precio de alguna especialidad en particular o agendar una cita?";
-            }
-            setLastBotQuestion("pregunta_precio_seguimiento");
-            setContextoConversacion("precios");
-            agregarMensaje("bot", respuestaBot);
-            handled = true;
-            return;
-        }
-
-        // --- PRIORIDAD 4: Detección de otras preguntas generales (si no se ha manejado antes) ---
-        // Excluimos "precios_consultas" porque ya la manejamos arriba
-        const otherGeneralIntents = {};
-        for (const key in respuestasData.preguntas_generales) {
-            if (key !== "precios_consultas") {
-                otherGeneralIntents[key] = respuestasData.preguntas_generales[key];
-            }
-        }
-        const generalMatches = getMatchingIntents(textoNormalizado, otherGeneralIntents);
-
+        // --- Prioridad 0: Generales ---
+        const generalMatches = getMatchingIntents(textoNormalizado, respuestasData.general);
         if (generalMatches.length > 0 && !handled) {
-            const bestMatch = generalMatches[0];
-            respuestaBot = bestMatch.entry.respuestas[Math.floor(Math.random() * bestMatch.entry.respuestas.length)];
-            setContextoConversacion(bestMatch.entry.next_context || null);
-            setLastBotQuestion(bestMatch.entry.specific_prompt || null);
+            respuestaBot = generalMatches[0].entry.respuestas[Math.floor(Math.random() * generalMatches[0].entry.respuestas.length)];
             agregarMensaje("bot", respuestaBot);
+            setContextoConversacion(null);
+            setLastBotQuestion(null);
+            setLastSpecialtyMentioned(null);
+            setSintomasAcumulados([]);
             handled = true;
             return;
         }
 
-        // --- PRIORIDAD 5: Detección de especialidades médicas (descripción, no precio) ---
-        const especialidadInfoMatches = getMatchingIntents(textoNormalizado, respuestasData.especialidades_medicas);
-        if (especialidadInfoMatches.length > 0 && !handled) {
-            const bestMatch = especialidadInfoMatches[0];
+        // --- Prioridad 1: Detección de preguntas generales ---
+        const preguntasGeneralesMatches = getMatchingIntents(textoNormalizado, respuestasData.preguntas_generales);
+        if (preguntasGeneralesMatches.length > 0 && !handled) {
+            const bestMatch = preguntasGeneralesMatches[0];
             respuestaBot = bestMatch.entry.respuestas[Math.floor(Math.random() * bestMatch.entry.respuestas.length)];
-            respuestaBot += " " + bestMatch.entry.specific_prompt;
-            setContextoConversacion("especialidad_info_seguimiento");
-            setLastSpecialtyMentioned(bestMatch.key); // Guardar la especialidad para seguimiento
-            agregarMensaje("bot", respuestaBot);
-            handled = true;
-            return;
-        }
 
-        // --- Manejo de "más detalles" cuando hay una especialidad mencionada ---
-        if (masDetallesKeywords.some(keyword => textoNormalizado.includes(keyword)) && lastSpecialtyMentioned && contextoConversacion === "especialidades" && !handled) {
-            const specialtyData = respuestasData.especialidades_medicas[lastSpecialtyMentioned];
-            if (specialtyData && specialtyData.detalles_adicionales) {
-                respuestaBot = specialtyData.detalles_adicionales;
-                respuestaBot += " " + (specialtyData.specific_prompt || `¿Necesitas más detalles sobre el ${lastSpecialtyMentioned.replace(/_/g, ' ')}, o quieres saber sobre **agendar una cita** con él?`);
-                setLastBotQuestion("agendar_cita_especialidad");
-                setContextoConversacion("especialidades");
+            if (bestMatch.entry.specific_prompt) {
+                respuestaBot += " " + bestMatch.entry.specific_prompt;
+                setLastBotQuestion("pregunta_general_ayuda");
             } else {
-                respuestaBot = `No tengo más detalles específicos en este momento sobre ${lastSpecialtyMentioned.replace(/_/g, ' ')}. ¿Te gustaría saber sobre **agendar una cita** con esta especialidad o ver el **menú**?`;
-                setLastBotQuestion("agendar_cita_especialidad");
-                setContextoConversacion("especialidades");
+                setLastBotQuestion(null);
             }
-            agregarMensaje("bot", respuestaBot);
-            handled = true;
-            return;
-        }
 
-        if (contextoConversacion === "especialidades" && lastSpecialtyMentioned && precioEspecificoKeywords.some(keyword => textoNormalizado.includes(keyword)) && !handled) {
-            const specialtyPriceData = respuestasData.precios_consultas_especificos[lastSpecialtyMentioned];
-            if (specialtyPriceData) {
-                respuestaBot = specialtyPriceData.respuestas[Math.floor(Math.random() * specialtyPriceData.respuestas.length)];
-                respuestaBot += " ¿Te gustaría agendar una cita con esta especialidad o necesitas saber el precio de otra?";
-                setLastBotQuestion("agendar_cita_especialidad");
-                setContextoConversacion("precios_especialidad_seguimiento");
-                agregarMensaje("bot", respuestaBot);
-                handled = true;
-                return;
+            if (bestMatch.key === "agendar_cita") {
+                setLastBotQuestion("agendar_cita_opciones_pref");
+                setContextoConversacion("agendar_cita_opciones");
+
+            } else {
+                setContextoConversacion(bestMatch.entry.next_context);
             }
-        }
 
-        // --- Prioridad 0: Despedidas ---
-        const despedidaMatches = getMatchingIntents(textoNormalizado, {
-            "despedida": respuestasData.general.despedida
-        });
-        if (despedidaMatches.length > 0 && !handled) {
-            respuestaBot = despedidaMatches[0].entry.respuestas[Math.floor(Math.random() * despedidaMatches[0].entry.respuestas.length)];
-            agregarMensaje("bot", respuestaBot);
-            setContextoConversacion(null);
-            setLastBotQuestion(null);
-            setLastSpecialtyMentioned(null);
             setSintomasAcumulados([]);
-            handled = true;
-            return;
-        }
-
-        // --- Prioridad 1: Saludos ---
-        const saludosKeywords = ["hola", "buenas", "buenos dias", "buen dia", "hey", "saludos", "que tal", "hola bot", "hola medico", "hola asistente", "holi", "bienvenido", "bienvenida"];
-        if (saludosKeywords.some(keyword => textoNormalizado.includes(keyword)) && !handled) {
-            respuestaBot = respuestasData.bienvenida.respuestas[Math.floor(Math.random() * respuestasData.bienvenida.respuestas.length)];
-            agregarMensaje("bot", respuestaBot);
-            setContextoConversacion(null);
-            setSintomasAcumulados([]);
-            setLastBotQuestion(null);
             setLastSpecialtyMentioned(null);
-            handled = true;
-            return;
-        }
-
-        // --- Prioridad 2: Preguntas directas sobre el bot (nombre, edad) ---
-        const botInfoMatches = getMatchingIntents(textoNormalizado, {
-            "nombre_bot": respuestasData.general.nombre_bot,
-            "edad_bot": respuestasData.general.edad_bot
-        });
-        if (botInfoMatches.length > 0 && !handled) {
-            const bestMatch = botInfoMatches[0];
-            respuestaBot = bestMatch.entry.respuestas[Math.floor(Math.random() * bestMatch.entry.respuestas.length)];
             agregarMensaje("bot", respuestaBot);
-            setContextoConversacion(null);
-            setLastBotQuestion(null);
-            setLastSpecialtyMentioned(null);
             handled = true;
             return;
         }
 
-
-
-        // AÑADIDO: Si el usuario pregunta por precio mientras está en el contexto de especialidades
-        // y ya se mencionó una especialidad.
-        if (contextoConversacion === "especialidades" && lastSpecialtyMentioned && precioEspecificoKeywords.some(keyword => textoNormalizado.includes(keyword)) && !handled) {
-            const specialtyPriceData = respuestasData.precios_consultas_especificos[lastSpecialtyMentioned];
-            if (specialtyPriceData) {
-                respuestaBot = specialtyPriceData.respuestas[Math.floor(Math.random() * specialtyPriceData.respuestas.length)];
-                respuestaBot += " ¿Te gustaría agendar una cita con esta especialidad o necesitas saber el precio de otra?";
-                setLastBotQuestion("agendar_cita_especialidad");
-                setContextoConversacion("precios_especialidad_seguimiento"); // Cambiar a contexto de seguimiento de precios
-                agregarMensaje("bot", respuestaBot);
-                handled = true;
-                return;
-            }
-        }
-
-        // --- Prioridad 4: Manejo de la preferencia de agendar cita (web, telefono, presencial) ---
-        if (contextoConversacion === "agendar_cita_opciones" && lastBotQuestion === "agendar_cita_opciones_pref") {
-            if (textoNormalizado.includes("web") || textoNormalizado.includes("en linea") || textoNormalizado.includes("internet") || textoNormalizado.includes("pagina")) {
-                respuestaBot = "¡Entendido! Para agendar tu cita en línea, por favor visita nuestra página web: **www.clinicaprueba.com/citas**. Es un proceso rápido y fácil.";
-                nuevoContexto = null;
-                setSintomasAcumulados([]);
-                setLastBotQuestion(null);
-                setLastSpecialtyMentioned(null);
-            } else if (textoNormalizado.includes("telefono") || textoNormalizado.includes("llamada") || textoNormalizado.includes("llamar") || textoNormalizado.includes("numero")) {
-                respuestaBot = "Claro, para agendar tu cita por teléfono, puedes llamarnos al **2234-5678** en nuestros horarios de atención (L-V, 8 AM - 5 PM).";
-                nuevoContexto = null;
-                setSintomasAcumulados([]);
-                setLastBotQuestion(null);
-                setLastSpecialtyMentioned(null);
-            } else if (textoNormalizado.includes("presencial") || textoNormalizado.includes("clinica") || textoNormalizado.includes("ir") || textoNormalizado.includes("fisico") || textoNormalizado.includes("recepcion")) {
-                respuestaBot = "De acuerdo, puedes acercarte directamente a nuestra clínica en **Calle Principal #123, Colonia San Benito, San Salvador** y agendar tu cita en recepción.";
-                nuevoContexto = null;
-                setSintomasAcumulados([]);
-                setLastBotQuestion(null);
-                setLastSpecialtyMentioned(null);
-            } else if (noKeywords.some(keyword => textoNormalizado.includes(keyword)) || textoNormalizado.includes("ninguna") || textoNormalizado.includes("ninguno")) {
-                respuestaBot = "Entendido, parece que no deseas agendar una cita en este momento. ¿Hay algo más en lo que pueda ayudarte, o prefieres volver al **'menú'** principal?";
-                nuevoContexto = null; // Reiniciar contexto
-                setLastBotQuestion("pregunta_general_ayuda"); // Pregunta general para volver al flujo
-                setSintomasAcumulados([]);
-                setLastSpecialtyMentioned(null);
-            }
-            else {
-                respuestaBot = "Disculpa, no entendí tu preferencia. ¿Prefieres agendar por **'web'**, por **'teléfono'** o **'presencialmente'** en la clínica? Si ya no deseas agendar, puedes escribir 'menú'.";
-                nuevoContexto = "agendar_cita_opciones"; // Mantener el contexto para reintentar
-            }
-            agregarMensaje("bot", respuestaBot);
-            setContextoConversacion(nuevoContexto);
-            handled = true;
-            return;
-        }
-
-        // --- Prioridad 5: Lógica para manejar "Sí", "No" en función de la última pregunta del bot ---
-        if (lastBotQuestion) {
+        // --- Prioridad 2: Lógica para manejar "Sí", "No" en función de la última pregunta del bot ---
+        if (!handled && lastBotQuestion) {
             // Manejar confirmación de agendar cita con especialista (ya sea por recomendación o especialidad directa)
             if (lastBotQuestion.startsWith("agendar_cita_")) {
                 const especialistaRecomendado = lastSpecialtyMentioned;
@@ -387,7 +223,7 @@ const Chatbot = () => {
             }
             // Manejar confirmación para recomendar especialista final (después de síntomas)
             else if (lastBotQuestion === "recomendar_especialista_final") {
-                if (yesKeywords.some(keyword => textoNormalizado.includes(keyword))) {
+                if (yesKeywords.includes(textoNormalizado)) {
                     const recomendacion = recomendarEspecialista(sintomasAcumulados);
                     respuestaBot = `${recomendacion.recomendacion_detallada} ¿Te gustaría que te ayude a **agendar una cita** con un **${recomendacion.especialista}**?`;
                     setLastBotQuestion(`agendar_cita_recomendacion_${recomendacion.especialista}`);
@@ -397,7 +233,7 @@ const Chatbot = () => {
                     handled = true;
                     return;
                 }
-                else if (noKeywords.some(keyword => textoNormalizado.includes(keyword)) || textoNormalizado.includes("solo eso") || textoNormalizado.includes("solamente")) {
+                else if (noKeywords.includes(textoNormalizado) || textoNormalizado.includes("solo eso") || textoNormalizado.includes("solamente")) {
                     respuestaBot = "De acuerdo, no te haré una recomendación en este momento. ¿Hay algo más sobre tus **síntomas** o **especialidades** que quieras saber, o prefieres volver al **'menú' principal**?";
                     setContextoConversacion("sintomas_o_especialidades");
                     setLastBotQuestion("pregunta_general_ayuda_sintomas_especialidades");
@@ -409,7 +245,7 @@ const Chatbot = () => {
             }
             // Manejar respuesta a preguntas generales de confirmación (ej. "¿Hay algo más en lo que pueda ayudarte?")
             else if (lastBotQuestion === "pregunta_general_ayuda" || lastBotQuestion === "pregunta_general_ayuda_sintomas_especialidades") {
-                if (yesKeywords.some(keyword => textoNormalizado.includes(keyword))) {
+                if (yesKeywords.includes(textoNormalizado)) {
                     respuestaBot = "¡Claro! Dime, ¿qué necesitas saber?";
                     setContextoConversacion(null);
                     setLastBotQuestion(null);
@@ -449,106 +285,9 @@ const Chatbot = () => {
             }
         }
 
-        // --- Prioridad 6: Lógica del Menú Principal (prioridad alta y setea contexto) ---
-        const menuKeywords = ["menu", "opciones", "ayuda", "que puedes hacer", "que haces", "ayudame", "lista de opciones", "volver al menu", "categorias", "temas"];
-        if (menuKeywords.some(keyword => textoNormalizado.includes(keyword)) && !handled) {
-            // Accede directamente a las respuestas del menú que ya existen
-            const menuResponses = respuestasData.menu.respuestas;
-
-            respuestaBot = menuResponses[Math.floor(Math.random() * menuResponses.length)];
-
-            agregarMensaje("bot", respuestaBot);
-            setContextoConversacion("menu_principal_esperando_opcion");
-            setSintomasAcumulados([]);
-            setLastBotQuestion(null);
-            setLastSpecialtyMentioned(null);
-            handled = true;
-            return;
-        }
-
-        // --- Prioridad 7: Preguntas Generales (Horarios, Contacto, Agendar Cita, etc.) ---
-        // Excluimos las preguntas de precios porque ya se manejan arriba con prioridad máxima
-        if (!handled) {
-            const generalMatches = getMatchingIntents(textoNormalizado, {
-                "horarios": respuestasData.preguntas_generales.horarios,
-                "contacto": respuestasData.preguntas_generales.contacto,
-                "urgencias": respuestasData.preguntas_generales.urgencias,
-                "seguros_medicos": respuestasData.preguntas_generales.seguros_medicos,
-                "documentos_nuevos_pacientes": respuestasData.preguntas_generales.documentos_nuevos_pacientes,
-                "historial_medico": respuestasData.preguntas_generales.historial_medico,
-                "formas_pago": respuestasData.preguntas_generales.formas_pago,
-                "agendar_cita": respuestasData.preguntas_generales.agendar_cita,
-                "como_estas": respuestasData.general.como_estas
-            });
-
-            if (generalMatches.length > 0) {
-                const bestMatch = generalMatches[0];
-                respuestaBot = bestMatch.entry.respuestas[Math.floor(Math.random() * bestMatch.entry.respuestas.length)];
-
-                if (bestMatch.entry.specific_prompt) {
-                    respuestaBot += " " + bestMatch.entry.specific_prompt;
-                    if (bestMatch.key !== "agendar_cita") { // No setear lastBotQuestion a 'pregunta_general_ayuda' para agendar_cita
-                        setLastBotQuestion("pregunta_general_ayuda");
-                    }
-                } else {
-                    setLastBotQuestion(null);
-                }
-
-                if (bestMatch.key === "agendar_cita") {
-                    setContextoConversacion("agendar_cita_opciones");
-                    setLastBotQuestion("agendar_cita_opciones_pref");
-                    setSintomasAcumulados([]);
-                    setLastSpecialtyMentioned(null);
-                } else {
-                    setContextoConversacion(bestMatch.entry.next_context);
-                    setLastSpecialtyMentioned(null);
-                }
-                agregarMensaje("bot", respuestaBot);
-                handled = true;
-                return;
-            }
-        }
-
-        // --- Prioridad 8: Manejo de palabras de reconocimiento (agradecimiento/confirmación) ---
-        if (acknowledgeKeywords.some(keyword => textoNormalizado.includes(keyword)) && !handled) {
-            respuestaBot = "De nada. ¿Hay algo más en lo que pueda ayudarte o quieres volver al menú?";
-            setContextoConversacion(null);
-            setLastBotQuestion("pregunta_general_ayuda");
-            setLastSpecialtyMentioned(null);
-            agregarMensaje("bot", respuestaBot);
-            handled = true;
-            return;
-        }
-
-        // --- Prioridad 9: Manejo de "bromas" o "quién eres" ---
-        const bromaMatches = getMatchingIntents(textoNormalizado, respuestasData.bromas);
-        if (bromaMatches.length > 0 && !handled) {
-            const bestMatch = bromaMatches[0];
-            respuestaBot = bestMatch.entry.respuestas[Math.floor(Math.random() * bestMatch.entry.respuestas.length)];
-            agregarMensaje("bot", respuestaBot);
-            setContextoConversacion(null);
-            setLastBotQuestion(null);
-            setLastSpecialtyMentioned(null);
-            handled = true;
-            return;
-        }
-
-        // --- Prioridad 10: Manejo de la frase "me siento mal" o síntomas generales (prioridad alta) ---
-        const meSientoMalMatches = getMatchingIntents(textoNormalizado, {
-            "me_siento_mal": respuestasData.sintomas_orientacion.me_siento_mal
-        });
+        // --- Prioridad 3: Manejo de síntomas generales ---
         const sintomaMatchesDirect = getMatchingIntents(textoNormalizado, respuestasData.sintomas_orientacion);
-
-        if (meSientoMalMatches.length > 0 && !handled) {
-            respuestaBot = meSientoMalMatches[0].entry.respuestas[0];
-            setContextoConversacion("sintomas");
-            setSintomasAcumulados([]);
-            setLastBotQuestion(null);
-            setLastSpecialtyMentioned(null);
-            agregarMensaje("bot", respuestaBot);
-            handled = true;
-            return;
-        } else if (sintomaMatchesDirect.length > 0 && contextoConversacion !== "sintomas" && !handled) {
+        if (sintomaMatchesDirect.length > 0 && !contextoConversacion && !handled) {
             const nuevosSintomas = sintomaMatchesDirect.map(match => match.key);
             setSintomasAcumulados(prev => {
                 const uniqueSymptoms = new Set([...prev, ...nuevosSintomas]);
@@ -565,27 +304,110 @@ const Chatbot = () => {
             return;
         }
 
-        // --- Prioridad 11: Activación robusta de la recomendación de especialista (después de síntomas) ---
-        const activarRecomendacionKeywords = ["ya te dije todo", "ya te conte todo", "que hago", "que me recomiendas", "y ahora que", "dime que tengo", "cual es mi diagnostico", "recomiendame uno", "hazlo", "recomienda un especialista", "dame una recomendacion", "dime el especialista", "es todo", "siguiente", "recomiendame un especialista", "recomiendame un doctor", "recomiendame un medico", "recomiendame un especialista porfavor", "recomiendame un especialista por favor", "recomiendame un doctor porfavor", "recomiendame un doctor por favor", "recomiendame un medico porfavor", "recomiendame un medico por favor"];
-        if (activarRecomendacionKeywords.some(keyword => textoNormalizado.includes(keyword)) && contextoConversacion === "sintomas" && !handled) {
-            if (sintomasAcumulados.length > 0) {
-                const recomendacion = recomendarEspecialista(sintomasAcumulados);
-                respuestaBot = `${recomendacion.recomendacion_detallada} ¿Te gustaría que te ayude a **agendar una cita** con un **${recomendacion.especialista}**?`;
-                setLastBotQuestion(`agendar_cita_recomendacion_${recomendacion.especialista}`);
-                setContextoConversacion(null);
-                setLastSpecialtyMentioned(recomendacion.especialista.replace(/ /g, '_'));
+        // --- Prioridad 4: Detección de especialidades médicas ---
+        const especialidadInfoMatches = getMatchingIntents(textoNormalizado, respuestasData.especialidades_medicas);
+        if (especialidadInfoMatches.length > 0 && !handled) {
+            const bestMatch = especialidadInfoMatches[0];
+            respuestaBot = bestMatch.entry.respuestas[Math.floor(Math.random() * bestMatch.entry.respuestas.length)];
+            respuestaBot += " " + bestMatch.entry.specific_prompt;
+            setLastBotQuestion("agendar_cita_especialidad");
+            setContextoConversacion("especialidades");
+            setLastSpecialtyMentioned(bestMatch.key); // Guardar la especialidad para seguimiento
+            agregarMensaje("bot", respuestaBot);
+            handled = true;
+            return;
+        }
+
+        // --- Prioridad 5: Manejo de "más detalles" cuando hay una especialidad mencionada ---
+        if (masDetallesKeywords.some(keyword => textoNormalizado.includes(keyword)) && lastSpecialtyMentioned && contextoConversacion === "especialidades" && !handled) {
+            const specialtyData = respuestasData.especialidades_medicas[lastSpecialtyMentioned];
+            if (specialtyData && specialtyData.detalles_adicionales) {
+                respuestaBot = specialtyData.detalles_adicionales;
+                respuestaBot += " " + (specialtyData.specific_prompt || `¿Necesitas más detalles sobre el ${lastSpecialtyMentioned.replace(/_/g, ' ')}, o quieres saber sobre **agendar una cita** con él?`);
+                setLastBotQuestion("agendar_cita_especialidad");
+                setContextoConversacion("especialidades");
+            } else {
+                respuestaBot = `No tengo más detalles específicos en este momento sobre ${lastSpecialtyMentioned.replace(/_/g, ' ')}. ¿Te gustaría saber sobre **agendar una cita** con esta especialidad o ver el **menú**?`;
+                setLastBotQuestion("agendar_cita_especialidad");
+                setContextoConversacion("especialidades");
+            }
+            agregarMensaje("bot", respuestaBot);
+            handled = true;
+            return;
+        }
+
+        // --- Prioridad 6: Manejo de "precio" cuando hay una especialidad mencionada ---
+        if (["especialidades", "agendar_cita_opciones"].includes(contextoConversacion) && lastSpecialtyMentioned && precioEspecificoKeywords.some(keyword => textoNormalizado.includes(keyword)) && !handled) {
+            const specialtyPriceData = respuestasData.precios_consultas_especificos[lastSpecialtyMentioned];
+            if (specialtyPriceData) {
+                respuestaBot = specialtyPriceData.respuestas[Math.floor(Math.random() * specialtyPriceData.respuestas.length)];
+                respuestaBot += " ¿Te gustaría agendar una cita con esta especialidad o necesitas saber el precio de otra?";
+                setLastBotQuestion("agendar_cita_especialidad");
+                setContextoConversacion("agendar_cita_"); // Cambiar a contexto de seguimiento de precios
                 agregarMensaje("bot", respuestaBot);
                 handled = true;
                 return;
             } else {
-                respuestaBot = "Para poder recomendarte un especialista, primero necesito que me digas qué síntomas tienes. ¿Puedes ser más específico? Por ejemplo: 'dolor de cabeza', 'fiebre'.";
-                setContextoConversacion("sintomas");
-                setLastSpecialtyMentioned(null);
+                respuestaBot = "No tengo precios específicos en este momento para esta especialidad. ¿Te gustaría saber el precio de otra especialidad o agendar una cita con ella?";
+                setLastBotQuestion("agendar_cita_especialidad");
+                setContextoConversacion("agendar_cita_"); // Cambiar a contexto de seguimiento de precios
                 agregarMensaje("bot", respuestaBot);
                 handled = true;
                 return;
             }
         }
+
+        // --- Prioridad 7: Manejo de la preferencia de agendar cita (web, telefono, presencial) ---
+        if (contextoConversacion === "agendar_cita_opciones" && lastBotQuestion === "agendar_cita_opciones_pref") {
+            if (textoNormalizado.includes("web") || textoNormalizado.includes("en linea") || textoNormalizado.includes("internet") || textoNormalizado.includes("pagina")) {
+                respuestaBot = "¡Entendido! Para agendar tu cita en línea, por favor visita nuestra página web: **www.clinicaprueba.com/citas**. Es un proceso rápido y fácil.";
+                nuevoContexto = null;
+                setSintomasAcumulados([]);
+                setLastBotQuestion(null);
+                setLastSpecialtyMentioned(null);
+            } else if (textoNormalizado.includes("telefono") || textoNormalizado.includes("llamada") || textoNormalizado.includes("llamar") || textoNormalizado.includes("numero")) {
+                respuestaBot = "Claro, para agendar tu cita por teléfono, puedes llamarnos al **2234-5678** en nuestros horarios de atención (L-V, 8 AM - 5 PM).";
+                nuevoContexto = null;
+                setSintomasAcumulados([]);
+                setLastBotQuestion(null);
+                setLastSpecialtyMentioned(null);
+            } else if (textoNormalizado.includes("presencial") || textoNormalizado.includes("clinica") || textoNormalizado.includes("ir") || textoNormalizado.includes("fisico") || textoNormalizado.includes("recepcion")) {
+                respuestaBot = "De acuerdo, puedes acercarte directamente a nuestra clínica en **Calle Principal #123, Colonia San Benito, San Salvador** y agendar tu cita en recepción.";
+                nuevoContexto = null;
+                setSintomasAcumulados([]);
+                setLastBotQuestion(null);
+                setLastSpecialtyMentioned(null);
+            } else if (noKeywords.some(keyword => textoNormalizado.includes(keyword)) || textoNormalizado.includes("ninguna") || textoNormalizado.includes("ninguno")) {
+                respuestaBot = "Entendido, parece que no deseas agendar una cita en este momento. ¿Hay algo más en lo que pueda ayudarte, o prefieres volver al **'menú'** principal?";
+                nuevoContexto = null; // Reiniciar contexto
+                setLastBotQuestion("pregunta_general_ayuda"); // Pregunta general para volver al flujo
+                setSintomasAcumulados([]);
+                setLastSpecialtyMentioned(null);
+            }
+            else {
+                respuestaBot = "Disculpa, no entendí tu preferencia. ¿Prefieres agendar por **'web'**, por **'teléfono'** o **'presencialmente'** en la clínica? Si ya no deseas agendar, puedes escribir 'menú'.";
+                nuevoContexto = "agendar_cita_opciones"; // Mantener el contexto para reintentar
+            }
+            agregarMensaje("bot", respuestaBot);
+            setContextoConversacion(nuevoContexto);
+            handled = true;
+            return;
+        }
+
+        // --- Prioridad 8: Manejo de "bromas" o "quién eres" ---
+        const bromaMatches = getMatchingIntents(textoNormalizado, respuestasData.bromas);
+        if (bromaMatches.length > 0 && !handled) {
+            const bestMatch = bromaMatches[0];
+            respuestaBot = bestMatch.entry.respuestas[Math.floor(Math.random() * bestMatch.entry.respuestas.length)];
+            agregarMensaje("bot", respuestaBot);
+            setContextoConversacion(null);
+            setLastBotQuestion(null);
+            setLastSpecialtyMentioned(null);
+            handled = true;
+            return;
+        }
+
+
 
         // Modificación: Manejar "sintomas" o "especialidades" si el contexto anterior lo permite
         if (!handled && (contextoConversacion === "sintomas_o_especialidades" || lastBotQuestion === "pregunta_general_ayuda_sintomas_especialidades")) {
@@ -642,10 +464,23 @@ const Chatbot = () => {
             const medicoGeneralMatch = getMatchingIntents(textoNormalizado, {
                 "medico_general": respuestasData.especialidades_medicas.medico_general,
                 "internista": respuestasData.especialidades_medicas.internista,
-                "medico_general_internista_diferencia": respuestasData.especialidades_medicas.medico_general_internista_diferencia
+                "medico_general_internista_diferencia": respuestasData.preguntas_generales.medico_general_internista_diferencia
             });
 
-            if (medicoGeneralMatch.length > 0) {
+            if (medicoGeneralMatch.length > 0 && medicoGeneralMatch[0].key === "medico_general_internista_diferencia") {
+                const bestMatch = medicoGeneralMatch[0];
+                respuestaBot = bestMatch.entry.respuestas[Math.floor(Math.random() * bestMatch.entry.respuestas.length)];
+                respuestaBot += " " + bestMatch.entry.specific_prompt;
+                setLastBotQuestion("pregunta_general_ayuda");
+                setContextoConversacion(bestMatch.entry.next_context);
+                setSintomasAcumulados([]);
+                setLastSpecialtyMentioned(null);
+                agregarMensaje("bot", respuestaBot);
+                handled = true;
+                return;
+            }
+
+            if (medicoGeneralMatch.length > 0 && medicoGeneralMatch[0].key !== "medico_general_internista_diferencia") {
                 const bestMatch = medicoGeneralMatch[0];
                 respuestaBot = bestMatch.entry.respuestas[Math.floor(Math.random() * bestMatch.entry.respuestas.length)];
                 nuevoContexto = bestMatch.entry.next_context;
@@ -686,52 +521,22 @@ const Chatbot = () => {
             return;
         }
 
-        if (!handled && contextoConversacion === "sintomas") {
-            const sintomaMatches = getMatchingIntents(textoNormalizado, respuestasData.sintomas_orientacion);
-            if (sintomaMatches.length > 0) {
-                const nuevosSintomas = sintomaMatches.map(match => match.key);
-                setSintomasAcumulados(prev => {
-                    const uniqueSymptoms = new Set([...prev, ...nuevosSintomas]);
-                    return Array.from(uniqueSymptoms);
-                });
-                const bestMatch = sintomaMatches[0];
-                respuestaBot = bestMatch.entry.respuestas[Math.floor(Math.random() * bestMatch.entry.respuestas.length)];
-                respuestaBot += " " + (bestMatch.entry.specific_prompt || "¿Tienes algún **otro síntoma** que te preocupe, o quieres que te **recomiende un especialista** con lo que ya me has dicho?");
-                setLastBotQuestion("recomendar_especialista_final");
-                nuevoContexto = "sintomas";
-                setLastSpecialtyMentioned(null);
-            } else {
-                if (sintomasAcumulados.length > 0) {
-                    respuestaBot = "No entendí ese síntoma. Por favor, describe tu síntoma con palabras más comunes, como 'dolor de cabeza', 'fiebre', o 'tos'. O si ya quieres una recomendación, escribe 'recomiendame un especialista'.";
-                    setLastBotQuestion("recomendar_especialista_final");
-                } else {
-                    respuestaBot = "No entendí ese síntoma. Por favor, describe tu síntoma con palabras más comunes, como 'dolor de cabeza', 'fiebre', o 'tos'. Si ya quieres una recomendación, escribe 'recomiendame un especialista'.";
-                }
-                nuevoContexto = "sintomas";
-                setLastSpecialtyMentioned(null);
-            }
-            agregarMensaje("bot", respuestaBot);
-            setContextoConversacion(nuevoContexto);
-            handled = true;
-            return;
-        }
-
 
         // --- Prioridad dentro del contexto "servicios_clinica" ---
-        if (contextoConversacion === "servicios_clinica" && !handled) {
+        if (!handled && contextoConversacion === "servicios_clinica") {
             const matchedIntentInServices = getMatchingIntents(textoNormalizado, respuestasData.preguntas_generales);
 
             if (matchedIntentInServices.length > 0) {
                 const bestMatch = matchedIntentInServices[0];
 
                 if (bestMatch.key === "agendar_cita") {
-            respuestaBot = bestMatch.entry.respuestas[Math.floor(Math.random() * bestMatch.entry.respuestas.length)];
-            respuestaBot += " " + (bestMatch.entry.specific_prompt || "¿Cuál de estas opciones prefieres?");
-            setContextoConversacion("agendar_cita_opciones");
-            setLastBotQuestion("agendar_cita_opciones_pref");
-            setSintomasAcumulados([]);
-            setLastSpecialtyMentioned(null);
-        } else if (bestMatch.key === "precios_consultas") {
+                    respuestaBot = bestMatch.entry.respuestas[Math.floor(Math.random() * bestMatch.entry.respuestas.length)];
+                    respuestaBot += " " + (bestMatch.entry.specific_prompt || "¿Cuál de estas opciones prefieres?");
+                    setContextoConversacion("agendar_cita_opciones");
+                    setLastBotQuestion("agendar_cita_opciones_pref");
+                    setSintomasAcumulados([]);
+                    setLastSpecialtyMentioned(null);
+                } else if (bestMatch.key === "precios_consultas") {
                     respuestaBot = bestMatch.entry.respuestas[Math.floor(Math.random() * bestMatch.entry.respuestas.length)];
                     respuestaBot += " ¿Te gustaría saber el precio de alguna especialidad en particular o agendar una cita?";
                     setLastBotQuestion("pregunta_precio_seguimiento");
@@ -773,9 +578,9 @@ const Chatbot = () => {
                     setLastBotQuestion(`agendar_desde_pb_${bestMatch.key}`);
                     setLastSpecialtyMentioned(bestMatch.key);
                 }
-                else if (!nuevoContexto) { 
+                else if (!nuevoContexto) {
                     respuestaBot += " " + (bestMatch.entry.specific_prompt || "¿Necesitas más información sobre bienestar o quieres **agendar una consulta** con un especialista?");
-                    setLastBotQuestion("pregunta_general_ayuda"); 
+                    setLastBotQuestion("pregunta_general_ayuda");
                     nuevoContexto = "prevencion_bienestar";
                     setLastSpecialtyMentioned(null);
                 }
@@ -839,6 +644,57 @@ const Chatbot = () => {
             setContextoConversacion(nuevoContexto);
             handled = true;
             return;
+        }
+
+        // --- Seguimiento de sintomas ---
+        if (!handled && contextoConversacion === "sintomas") {
+            const sintomaMatches = getMatchingIntents(textoNormalizado, respuestasData.sintomas_orientacion);
+            if (sintomaMatches.length > 0) {
+                const nuevosSintomas = sintomaMatches.map(match => match.key);
+                setSintomasAcumulados(prev => {
+                    const uniqueSymptoms = new Set([...prev, ...nuevosSintomas]);
+                    return Array.from(uniqueSymptoms);
+                });
+                const bestMatch = sintomaMatches[0];
+                respuestaBot = bestMatch.entry.respuestas[Math.floor(Math.random() * bestMatch.entry.respuestas.length)];
+                respuestaBot += " " + (bestMatch.entry.specific_prompt || "¿Tienes algún **otro síntoma** que te preocupe, o quieres que te **recomiende un especialista** con lo que ya me has dicho?");
+                setLastBotQuestion("recomendar_especialista_final");
+                setLastSpecialtyMentioned(null);
+            } else {
+                if (sintomasAcumulados.length > 0) {
+                    respuestaBot = "No entendí ese síntoma. Por favor, describe tu síntoma con palabras más comunes, como 'dolor de cabeza', 'fiebre', o 'tos'. O si ya quieres una recomendación, escribe 'recomiendame un especialista'.";
+                    setLastBotQuestion("recomendar_especialista_final");
+                } else {
+                    respuestaBot = "No entendí ese síntoma. Por favor, describe tu síntoma con palabras más comunes, como 'dolor de cabeza', 'fiebre', o 'tos'. Si ya quieres una recomendación, escribe 'recomiendame un especialista'.";
+                }
+                setLastSpecialtyMentioned(null);
+            }
+            agregarMensaje("bot", respuestaBot);
+            setContextoConversacion("sintomas");
+            handled = true;
+            return;
+        }
+
+        // --- Activación robusta de la recomendación de especialista (después de síntomas) ---
+        const activarRecomendacionKeywords = ["ya te dije todo", "ya te conte todo", "que hago", "que me recomiendas", "y ahora que", "dime que tengo", "cual es mi diagnostico", "recomiendame uno", "hazlo", "recomienda un especialista", "dame una recomendacion", "dime el especialista", "es todo", "siguiente", "recomiendame un especialista", "recomiendame un doctor", "recomiendame un medico", "recomiendame un especialista porfavor", "recomiendame un especialista por favor", "recomiendame un doctor porfavor", "recomiendame un doctor por favor", "recomiendame un medico porfavor", "recomiendame un medico por favor"];
+        if (activarRecomendacionKeywords.some(keyword => textoNormalizado.includes(keyword)) && contextoConversacion === "sintomas" && !handled) {
+            if (sintomasAcumulados.length > 0) {
+                const recomendacion = recomendarEspecialista(sintomasAcumulados);
+                respuestaBot = `${recomendacion.recomendacion_detallada} ¿Te gustaría que te ayude a **agendar una cita** con un **${recomendacion.especialista}**?`;
+                setLastBotQuestion(`agendar_cita_recomendacion_${recomendacion.especialista}`);
+                setContextoConversacion(null);
+                setLastSpecialtyMentioned(recomendacion.especialista.replace(/ /g, '_'));
+                agregarMensaje("bot", respuestaBot);
+                handled = true;
+                return;
+            } else {
+                respuestaBot = "Para poder recomendarte un especialista, primero necesito que me digas qué síntomas tienes. ¿Puedes ser más específico? Por ejemplo: 'dolor de cabeza', 'fiebre'.";
+                setContextoConversacion("sintomas");
+                setLastSpecialtyMentioned(null);
+                agregarMensaje("bot", respuestaBot);
+                handled = true;
+                return;
+            }
         }
 
         // --- Si no se manejó por ningún caso específico, usar la respuesta por defecto ---
